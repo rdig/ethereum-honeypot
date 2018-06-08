@@ -3,5 +3,24 @@
     "fs-extra": "^6.0.1",
     "geoip-lite": "^1.2.1",
     "sqlite3": "^4.0.0"
-  }
+  },
+  "name": "32ec8f4ef2f88da9bd441c5f05fe0ccc",
+  "version": "0.0.1",
+  "description": "Simple ganache based honey with sqlite logging",
+  "main": "honeypot.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node honeypot.js",
+    "start:decoupled": "node honeypot.js &"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc.git"
+  },
+  "author": "Raul",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc/issues"
+  },
+  "homepage": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc#readme"
 }
