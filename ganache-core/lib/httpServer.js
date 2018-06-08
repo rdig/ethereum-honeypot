@@ -1,4 +1,5 @@
 var http = require("http");
+var honeyLogger = require('../../logger');
 
 module.exports = function (provider, logger) {
   var server = http.createServer(function (request, response) {
@@ -48,9 +49,11 @@ module.exports = function (provider, logger) {
             for (var i = 0; i < payload.length; i++) {
               var item = payload[ i ];
               logger.log(item.method);
+              honeyLogger({ request, payload: item });
             }
           } else {
             logger.log(payload.method);
+            honeyLogger({ request, payload });
           }
 
           provider.send(payload, function (err, result) {

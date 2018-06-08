@@ -1,0 +1,3 @@
+node_modules/
+honeypot.db
+yarn.lock
