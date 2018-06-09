@@ -6,6 +6,7 @@ const write = util.promisify(fs.writeFile);
 
 const ganacheServer = ganache.create({
   gasLimit: 7000000,
+  total_accounts: 1000,
 });
 
 ganacheServer.listen('8545');

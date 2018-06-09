@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "node-fetch": "^2.1.2",
     "sqlite3": "^4.0.0"
   },
   "name": "32ec8f4ef2f88da9bd441c5f05fe0ccc",
