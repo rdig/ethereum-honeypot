@@ -8,18 +8,19 @@ const honeyLogger = ({ request, payload, response } = {}) => {
   const database = new sqlite3.Database('./honeypot.db');
 
   fetch(`http://ip-api.com/json/${ipAddress}`).then(res => res.text()).then(body => {
+    const fetchResponse = JSON.parse(body);
     let locationObject = {
       as: 'Local connection',
       city: 'Local connection',
       country: 'Local connection',
       isp: 'Local connection',
     };
-    if (!JSON.parse(body).message) {
+    if (!fetchResponse.message) {
       locationObject = {
-        as: body.as,
-        city: body.city,
-        country: body.country,
-        isp: body.country,
+        as: fetchResponse.as,
+        city: fetchResponse.city,
+        country: fetchResponse.country,
+        isp: fetchResponse.country,
       };
     }
     database
