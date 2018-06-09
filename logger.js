@@ -14,6 +14,8 @@ const honeyLogger = ({ request, payload, response } = {}) => {
       city: 'Local connection',
       country: 'Local connection',
       isp: 'Local connection',
+      lat: 0.0,
+      lon: 0.0,
     };
     if (!fetchResponse.message) {
       locationObject = {
@@ -21,18 +23,23 @@ const honeyLogger = ({ request, payload, response } = {}) => {
         city: fetchResponse.city,
         country: fetchResponse.country,
         isp: fetchResponse.country,
+        lat: fetchResponse.lat,
+        lon: fetchResponse.lon,
       };
     }
     database
       .run(
-        'CREATE TABLE IF NOT EXISTS honeypot_new (id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT, city TEXT, country TEXT, network TEXT, isp TEXT, ua TEXT, method TEXT, request TEXT, response TEXT, date INT);'
-      )
+        'CREATE TABLE IF NOT EXISTS honeypot_new (id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT, city TEXT, country TEXT, lat INT, lon INT, network TEXT, isp TEXT, ua TEXT, method TEXT, request TEXT, response TEXT, date INT);'
+      );
+    database
       .run(
-        `INSERT INTO honeypot_new (ip, city, country, network, isp, ua, method, request, response, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%s','now'))`,
+        `INSERT INTO honeypot_new (ip, city, country, lat, lon, network, isp, ua, method, request, response, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%s','now'))`,
         [
           ipAddress,
           locationObject.city,
           locationObject.country,
+          locationObject.lat,
+          locationObject.lon,
           locationObject.as,
           locationObject.isp,
           request.headers['user-agent'] || false,
