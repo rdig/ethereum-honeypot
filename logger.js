@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const fetch = require('node-fetch');
 
-const honeyLogger = ({ request, payload } = {}) => {
+const honeyLogger = ({ request, payload, response } = {}) => {
   const ipAddressRaw = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || (request.connection.socket ? request.connection.socket.remoteAddress : null);
   const ipAddress = ipAddressRaw.substring(ipAddressRaw.lastIndexOf(':') + 1);
 
@@ -24,10 +24,10 @@ const honeyLogger = ({ request, payload } = {}) => {
     }
     database
       .run(
-        'CREATE TABLE IF NOT EXISTS honeypot_new (id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT, city TEXT, country TEXT, network TEXT, isp TEXT, ua TEXT, method TEXT, request TEXT, date TEXT);'
+        'CREATE TABLE IF NOT EXISTS honeypot_new (id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT, city TEXT, country TEXT, network TEXT, isp TEXT, ua TEXT, method TEXT, request TEXT, response TEXT, date INT);'
       )
       .run(
-        'INSERT INTO honeypot_new (ip, city, country, network, isp, ua, method, request, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        `INSERT INTO honeypot_new (ip, city, country, network, isp, ua, method, request, response, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%s','now'))`,
         [
           ipAddress,
           locationObject.city,
@@ -37,10 +37,9 @@ const honeyLogger = ({ request, payload } = {}) => {
           request.headers['user-agent'] || false,
           payload.method,
           JSON.stringify(payload),
-          new Date().getTime()
+          response,
         ],
       );
-
     database.close();
   });
 }

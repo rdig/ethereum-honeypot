@@ -33,6 +33,10 @@ module.exports = function (provider, logger) {
         case "POST":
           //console.log("Request coming in:", body);
 
+          const loggerObject = {
+            request,
+          };
+
           var payload;
           try {
             payload = JSON.parse(body);
@@ -49,17 +53,20 @@ module.exports = function (provider, logger) {
             for (var i = 0; i < payload.length; i++) {
               var item = payload[ i ];
               logger.log(item.method);
-              honeyLogger({ request, payload: item });
+              loggerObject.payload = item;
             }
           } else {
             logger.log(payload.method);
-            honeyLogger({ request, payload });
+            loggerObject.payload = payload;
           }
 
           provider.send(payload, function (err, result) {
+            const responseResult = JSON.stringify(result);
             headers[ "Content-Type" ] = "application/json";
             response.writeHead(200, headers);
-            response.end(JSON.stringify(result));
+            response.end(responseResult);
+            loggerObject.response = responseResult;
+            honeyLogger(loggerObject);
           });
 
           break;
