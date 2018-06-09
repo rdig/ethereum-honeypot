@@ -1,4 +1,3 @@
-const geoIp = require('geoip-lite');
 const sqlite3 = require('sqlite3').verbose();
 
 const honeyLogger = ({ request, payload } = {}) => {
@@ -13,7 +12,7 @@ const honeyLogger = ({ request, payload } = {}) => {
     )
     .run(
       'INSERT INTO honeypot (ip, loc, ua, method, raw, date) VALUES (?, ?, ?, ?, ?, ?)',
-      [ipAddress, geoIp.lookup(ipAddress), request.headers['user-agent'] || false, payload.method, JSON.stringify(payload), new Date().getTime()],
+      [ipAddress, null, request.headers['user-agent'] || false, payload.method, JSON.stringify(payload), new Date().getTime()],
     );
 
   database.close();

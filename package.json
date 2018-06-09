@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "fs-extra": "^6.0.1",
-    "geoip-lite": "^1.2.1",
     "sqlite3": "^4.0.0"
   },
   "name": "32ec8f4ef2f88da9bd441c5f05fe0ccc",
@@ -10,6 +8,7 @@
   "main": "honeypot.js",
   "devDependencies": {},
   "scripts": {
+    "preinstall": "cd ganache-core && yarn",
     "start": "node honeypot.js",
     "start:decoupled": "node honeypot.js &"
   },
