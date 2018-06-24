@@ -1,4 +1,5 @@
 node_modules/
 honeypot.db
-yarn.lock
 ganache-accounts.json
+yarn.lock
+yarn-error.log
