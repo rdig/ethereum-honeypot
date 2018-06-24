@@ -9,8 +9,9 @@
   },
   "scripts": {
     "clean": "rm -Rf lib/",
-    "compile": "babel --out-dir lib/ src/",
+    "compile": "babel --copy-files --out-dir lib/ src/",
     "build": "yarn clean && yarn compile",
+    "build:watch": "yarn compile --watch",
     "lint": "eslint --fix src/**/*.js",
     "typecheck": "flow check"
   },
