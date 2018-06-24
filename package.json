@@ -12,6 +12,7 @@
     "compile": "babel --copy-files --out-dir lib/ src/",
     "build": "yarn clean && yarn compile",
     "build:watch": "yarn compile --watch",
+    "start": "node lib/index.js",
     "lint": "eslint --fix src/**/*.js",
     "typecheck": "flow check"
   },

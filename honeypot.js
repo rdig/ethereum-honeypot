@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const fs = require('fs');
 const util = require('util');
 const ganache = require('./ganache-core/lib/server');

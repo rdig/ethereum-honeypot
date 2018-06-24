@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const sqlite3 = require('sqlite3').verbose();
 const fetch = require('node-fetch');
 
