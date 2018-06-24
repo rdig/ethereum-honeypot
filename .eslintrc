@@ -29,6 +29,7 @@
       "always", {
         "annotationStyle": "block"
       }
-    ]
+    ],
+    "no-console": ["off"]
   }
 }

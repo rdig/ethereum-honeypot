@@ -2,6 +2,7 @@
 .*/src/.*
 
 [ignore]
+.*/lib/.*
 
 [libs]
 

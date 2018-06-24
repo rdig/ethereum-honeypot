@@ -3,3 +3,4 @@ honeypot.db
 ganache-accounts.json
 yarn.lock
 yarn-error.log
+lib
