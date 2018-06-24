@@ -1,26 +1,26 @@
 {
-  "dependencies": {
-    "node-fetch": "^2.1.2",
-    "sqlite3": "^4.0.0"
-  },
-  "name": "32ec8f4ef2f88da9bd441c5f05fe0ccc",
+  "name": "ethereum-honeypot",
+  "private": true,
   "version": "0.0.1",
-  "description": "Simple ganache based honey with sqlite logging",
-  "main": "honeypot.js",
-  "devDependencies": {},
-  "scripts": {
-    "preinstall": "cd ganache-core && yarn",
-    "start": "node honeypot.js",
-    "start:decoupled": "node honeypot.js &"
-  },
+  "description": "",
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc.git"
   },
-  "author": "Raul",
+  "author": "Raul Glogovetan <raul@glogovetan.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc/issues"
   },
-  "homepage": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc#readme"
+  "homepage": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc#readme",
+  "dependencies": {
+    "node-fetch": "^2.1.2",
+    "sqlite3": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.0.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.12.0"
+  }
 }

@@ -7,7 +7,7 @@ const honeyLogger = ({ request, payload, response } = {}) => {
 
   const database = new sqlite3.Database('./honeypot.db');
 
-  fetch(`http://ip-api.com/json/${ipAddress}`).then(res => res.text()).then(body => {
+  fetch(`http://ip-api.com/json/${ipAddress}`).then(res => res.text()).then((body) => {
     const fetchResponse = JSON.parse(body);
     let locationObject = {
       as: 'Local connection',
@@ -29,11 +29,11 @@ const honeyLogger = ({ request, payload, response } = {}) => {
     }
     database
       .run(
-        'CREATE TABLE IF NOT EXISTS honeypot_new (id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT, city TEXT, country TEXT, lat INT, lon INT, network TEXT, isp TEXT, ua TEXT, method TEXT, request TEXT, response TEXT, date INT);'
+        'CREATE TABLE IF NOT EXISTS honeypot_new (id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT, city TEXT, country TEXT, lat INT, lon INT, network TEXT, isp TEXT, ua TEXT, method TEXT, request TEXT, response TEXT, date INT);',
       );
     database
       .run(
-        `INSERT INTO honeypot_new (ip, city, country, lat, lon, network, isp, ua, method, request, response, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%s','now'))`,
+        'INSERT INTO honeypot_new (ip, city, country, lat, lon, network, isp, ua, method, request, response, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime(\'%s\',\'now\'))',
         [
           ipAddress,
           locationObject.city,
@@ -50,6 +50,6 @@ const honeyLogger = ({ request, payload, response } = {}) => {
       );
     database.close();
   });
-}
+};
 
 module.exports = honeyLogger;

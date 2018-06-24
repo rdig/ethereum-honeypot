@@ -14,12 +14,9 @@ ganacheServer.listen('8545');
 const ganacheAccounts = {
   accounts: ganacheServer.provider.manager.state.accounts,
   private_keys: Object.keys(ganacheServer.provider.manager.state.accounts).reduce(
-    (keys, address) =>
-      Object.assign({}, keys, {
-        [address]: ganacheServer.provider.manager.state.accounts[
-          address
-        ].secretKey.toString('hex'),
-      }),
+    (keys, address) => Object.assign({}, keys, {
+      [address]: ganacheServer.provider.manager.state.accounts[address].secretKey.toString('hex'),
+    }),
     {},
   ),
 };
