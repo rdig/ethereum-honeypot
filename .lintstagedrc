@@ -1,7 +1,6 @@
 {
   "linters": {
     "src/**/*.js": [
-      "yarn typecheck",
       "yarn lint",
       "git add"
     ],
