@@ -1,6 +1,5 @@
 node_modules/
-honeypot.db
+honeypot*.db
 ganache-accounts.json
-yarn.lock
 lib
 *.log
