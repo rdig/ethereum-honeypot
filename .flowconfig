@@ -3,6 +3,7 @@
 
 [ignore]
 .*/lib/.*
+.*/node_modules/oboe/.*
 
 [libs]
 

@@ -1,6 +1,7 @@
 /* @flow */
 
 import { createServer } from 'http';
+import { provider } from 'ganache-core';
 
 import { handleRequest } from './helpers';
 import { requestFailed } from '../messages.json';
@@ -15,11 +16,13 @@ import {
 
 import type { ServerArgumentsType } from '../flowtypes';
 
-export const start = async (
-  { port = RPC_DEFAULT_PORT }: ServerArgumentsType = {},
-): Promise<Object> => {
+export const start = async ({
+  port = RPC_DEFAULT_PORT,
+  providerOptions = {},
+}: ServerArgumentsType = {}): Promise<Object> => {
   const serverInstance = createServer((request, response) => {
     const handleMiscRequest = handleRequest.bind(response);
+    const ganacheProvider = provider(providerOptions);
     let requestDataBuffer: Buffer = Buffer.alloc(0);
     /*
      * Request
@@ -46,16 +49,19 @@ export const start = async (
              *
              * If that's the case, then we return a `Bad Request`, `400` server response.
              */
-            const payload = JSON.parse(requestDataBuffer.toString());
-            response.writeHead(
-              STATUS_CODES.OK,
-              Object.assign(
-                {},
-                DEFAULT_HEADERS,
-                { 'Content-Type': MIME_TYPES.JSON },
-              ),
-            );
-            response.end(JSON.stringify(payload));
+            const requestPayload = JSON.parse(requestDataBuffer.toString());
+            ganacheProvider.send(requestPayload, (responseError, providerResponse) => {
+              const serverReponse = JSON.stringify(providerResponse);
+              response.writeHead(
+                STATUS_CODES.OK,
+                Object.assign(
+                  {},
+                  DEFAULT_HEADERS,
+                  { 'Content-Type': MIME_TYPES.JSON },
+                ),
+              );
+              response.end(serverReponse);
+            });
             break;
           }
           case REQUEST_METHODS.OPTIONS: {

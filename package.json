@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc#readme",
   "dependencies": {
+    "ganache-core": "^2.1.3",
     "node-fetch": "^2.1.2",
     "sqlite3": "^4.0.0"
   },
