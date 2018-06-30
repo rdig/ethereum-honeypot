@@ -2,7 +2,7 @@
 
 import { createServer } from 'http';
 
-import { handleBadRequest, handleOptions } from './helpers';
+import { handleRequest } from './helpers';
 import { requestFailed } from '../messages.json';
 import {
   REQUEST_TYPES,
@@ -16,6 +16,7 @@ export const start = async (
   { port = RPC_DEFAULT_PORT }: ServerArgumentsType = {},
 ): Promise<Object> => {
   const serverInstance = createServer(({ method, url, ...request }, response) => {
+    const handleMiscRequest = handleRequest.bind(response);
     let requestDataBuffer: Buffer = Buffer.alloc(0);
     /*
      * Request
@@ -31,11 +32,15 @@ export const start = async (
     /*
      * Response
      */
-    if (method === REQUEST_METHODS.GET) {
-      handleBadRequest(response);
-    }
-    if (method === REQUEST_METHODS.OPTIONS) {
-      handleOptions(response);
+    switch (method) {
+      case REQUEST_METHODS.POST:
+        break;
+      case REQUEST_METHODS.OPTIONS:
+        handleMiscRequest(REQUEST_METHODS.OPTIONS);
+        break;
+      default:
+        handleMiscRequest();
+        break;
     }
   });
   return serverInstance.listen(port);

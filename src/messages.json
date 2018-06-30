@@ -2,5 +2,5 @@
     "requestFailed": "Request failed",
     "badRequest": "Bad Request",
     "okRequest": "OK",
-    "noResponseObject": "The providede request object is invalid"
+    "noResponseObject": "The provided request object is invalid"
 }
