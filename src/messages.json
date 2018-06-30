@@ -1,3 +1,4 @@
 {
-    "requestFailed": "Request failed"
+    "requestFailed": "Request failed",
+    "noRequestObject": "The providede request object is invalid",
 }
