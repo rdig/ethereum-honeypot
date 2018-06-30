@@ -19,6 +19,7 @@ import type { ServerArgumentsType } from '../flowtypes';
 export const start = async ({
   port = RPC_DEFAULT_PORT,
   providerOptions = {},
+  logger,
 }: ServerArgumentsType = {}): Promise<Object> => {
   const serverInstance = createServer((request, response) => {
     const handleMiscRequest = handleRequest.bind(response);
@@ -61,6 +62,16 @@ export const start = async ({
                 ),
               );
               response.end(serverReponse);
+              /*
+               * @TODO Cleaner way to log requests/responses
+               */
+              if (logger && typeof logger === 'function') {
+                logger({
+                  request,
+                  payload: requestPayload,
+                  response: serverReponse,
+                });
+              }
             });
             break;
           }
