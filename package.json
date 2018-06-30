@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc.git"
+    "url": "git+https://github.com/rdig/ethereum-honeypot.git"
   },
   "author": "Raul Glogovetan <raul@glogovetan.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc/issues"
+    "url": "https://github.com/rdig/ethereum-honeypot/issues"
   },
-  "homepage": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc#readme",
+  "homepage": "https://github.com/rdig/ethereum-honeypot#readme",
   "dependencies": {
     "ganache-core": "^2.1.3",
     "node-fetch": "^2.1.2",
