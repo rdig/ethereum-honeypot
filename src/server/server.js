@@ -2,8 +2,8 @@
 
 import { createServer } from 'http';
 
-import { handleBadRequest } from './helpers';
-import messages from '../messages.json';
+import { handleBadRequest, handleOptions } from './helpers';
+import { requestFailed } from '../messages.json';
 import {
   REQUEST_TYPES,
   RPC_DEFAULT_PORT,
@@ -23,7 +23,7 @@ export const start = async (
      * @TODO Better handle the error request type
      */
     request.connection.on(REQUEST_TYPES.ERROR, (error) => {
-      throw new Error(`${messages.requestFailed}. ${error}`);
+      throw new Error(`${requestFailed}. ${error}`);
     });
     request.connection.on(REQUEST_TYPES.DATA, (bufferChunk) => {
       requestDataBuffer = Buffer.concat([requestDataBuffer, bufferChunk]);
@@ -31,8 +31,11 @@ export const start = async (
     /*
      * Response
      */
-    if (method !== REQUEST_METHODS.POST) {
+    if (method === REQUEST_METHODS.GET) {
       handleBadRequest(response);
+    }
+    if (method === REQUEST_METHODS.OPTIONS) {
+      handleOptions(response);
     }
   });
   return serverInstance.listen(port);
