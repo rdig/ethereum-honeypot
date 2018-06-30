@@ -8,7 +8,8 @@ export const MIME_TYPES: Object = {
 };
 
 export const STATUS_CODES: Object = {
-  SUCCESS: 200,
+  OK: 200,
+  BAD_REQUEST: 400,
 };
 
 export const DEFAULT_HEADERS: Object = {
@@ -18,9 +19,17 @@ export const DEFAULT_HEADERS: Object = {
   'Content-Type': MIME_TYPES.PLAIN_TEXT,
 };
 
+export const REQUEST_TYPES: Object = {
+  ERROR: 'error',
+  DATA: 'data',
+  END: 'end',
+};
+
 const defaults = {
   MIME_TYPES,
   STATUS_CODES,
+  DEFAULT_HEADERS,
+  REQUEST_TYPES,
 };
 
 export default defaults;

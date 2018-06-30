@@ -11,7 +11,7 @@ export const start = async (
 ): Promise<Object> => {
   const serverInstance = createServer((request, response) => {
     response.writeHead(
-      STATUS_CODES.SUCCESS,
+      STATUS_CODES.OK,
       { 'Content-Type': MIME_TYPES.JSON },
     );
     response.write('Server is running!');
