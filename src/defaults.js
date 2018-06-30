@@ -25,11 +25,18 @@ export const REQUEST_TYPES: Object = {
   END: 'end',
 };
 
+export const REQUEST_METHODS: Object = {
+  POST: 'POST',
+  GET: 'GET',
+  OPTIONS: 'OPTIONS',
+};
+
 const defaults = {
   MIME_TYPES,
   STATUS_CODES,
   DEFAULT_HEADERS,
   REQUEST_TYPES,
+  REQUEST_METHODS,
 };
 
 export default defaults;
