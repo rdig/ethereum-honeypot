@@ -68,6 +68,10 @@ export const start = async (
           }
         }
       } catch (caughtError) {
+        /*
+         * @TODO Create a better error logging util
+         */
+        console.log(`[${new Date().toString()}]`, caughtError);
         handleMiscRequest();
       }
     });

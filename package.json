@@ -13,6 +13,7 @@
     "build": "yarn clean && yarn compile",
     "build:watch": "yarn compile --watch",
     "start": "node lib/index.js",
+    "start:log": "node lib/index.js >> ./server.log &",
     "lint": "eslint --fix src/**/*.js",
     "typecheck": "flow check"
   },
