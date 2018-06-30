@@ -23,16 +23,24 @@ export const start = async ({
 }: ServerArgumentsType = {}): Promise<Object> => {
   const serverInstance = createServer((request, response) => {
     const handleMiscRequest = handleRequest.bind(response);
+    /*
+     * Instantiate the ganache provider
+     */
     const ganacheProvider = provider(providerOptions);
     let requestDataBuffer: Buffer = Buffer.alloc(0);
     /*
      * Request
      *
      * @TODO Better handle the error request type
+     *
+     * Maybe this should also be in a try-catch block
      */
     request.on(REQUEST_TYPES.ERROR, (error) => {
       throw new Error(`${requestFailed}. ${error}`);
     });
+    /*
+     * Get the streamed request data and add it to the Buffer
+     */
     request.on(REQUEST_TYPES.DATA, (bufferChunk) => {
       requestDataBuffer = Buffer.concat([requestDataBuffer, bufferChunk]);
     });
@@ -51,8 +59,20 @@ export const start = async ({
              * If that's the case, then we return a `Bad Request`, `400` server response.
              */
             const requestPayload = JSON.parse(requestDataBuffer.toString());
+            /*
+             * Send the request data to the provider and listen of it's response
+             *
+             * @TODO Handle the case in which the provider runs into and error
+             */
             ganacheProvider.send(requestPayload, (responseError, providerResponse) => {
+              /*
+               * Get the response from the provider so we can send it back to the requester
+               */
               const serverReponse = JSON.stringify(providerResponse);
+              /*
+               * Since the data is in a (stringified) JSON format, we ne to set the
+               * headers accordingly
+               */
               response.writeHead(
                 STATUS_CODES.OK,
                 Object.assign(
@@ -61,8 +81,15 @@ export const start = async ({
                   { 'Content-Type': MIME_TYPES.JSON },
                 ),
               );
+              /*
+               * Send the response data
+               */
               response.end(serverReponse);
               /*
+               * Log the request and response to the database.
+               * We also pass in the whole request object so we can extract metadata from it
+               * (ip addreses, hosts, etc...)
+               *
                * @TODO Cleaner way to log requests/responses
                */
               if (logger && typeof logger === 'function') {
@@ -75,15 +102,25 @@ export const start = async ({
             });
             break;
           }
+          /*
+           * If it's and `OPTIONS` request, just answer with `200 OK` status
+           */
           case REQUEST_METHODS.OPTIONS: {
             handleMiscRequest(REQUEST_METHODS.OPTIONS);
             break;
           }
+          /*
+           * If it's any other kind of request answer with status `400 Bad Request`
+           */
           default: {
             handleMiscRequest();
             break;
           }
         }
+      /*
+       * If we run into an error, and the try-catch block is triggered, we assume that the request
+       * was malformed, and aswer with status `400 Bad Request`
+       */
       } catch (caughtError) {
         /*
          * @TODO Create a better error logging util
@@ -93,6 +130,9 @@ export const start = async ({
       }
     });
   });
+  /*
+   * Start listening to the server instance on the specified port
+   */
   return serverInstance.listen(port);
 };
 
