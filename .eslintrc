@@ -1,0 +1,35 @@
+{
+  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "env": {
+    "node": true,
+  },
+  plugins: ['flowtype'],
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+    "eqeqeq": ["error", "smart"],
+    "import/no-anonymous-default-export": ["error"],
+    "no-underscore-dangle": [
+      "error",
+      {
+        allowAfterThis: true
+      }
+    ],
+    "flowtype/require-valid-file-annotation": [
+      "warn",
+      "always", {
+        "annotationStyle": "block"
+      }
+    ],
+    "no-console": ["off"]
+  }
+}

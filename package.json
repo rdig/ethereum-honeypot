@@ -1,26 +1,53 @@
 {
-  "dependencies": {
-    "node-fetch": "^2.1.2",
-    "sqlite3": "^4.0.0"
-  },
-  "name": "32ec8f4ef2f88da9bd441c5f05fe0ccc",
+  "name": "ethereum-honeypot",
+  "description": "Track external parties actions run on open ethereum nodes",
   "version": "0.0.1",
-  "description": "Simple ganache based honey with sqlite logging",
-  "main": "honeypot.js",
-  "devDependencies": {},
+  "private": true,
+  "engines": {
+    "node": ">=9.11.0",
+    "yarn": ">=1.3.2"
+  },
   "scripts": {
-    "preinstall": "cd ganache-core && yarn",
-    "start": "node honeypot.js",
-    "start:decoupled": "node honeypot.js &"
+    "clean": "rm -Rf lib/",
+    "compile": "babel --copy-files --out-dir lib/ src/",
+    "build": "yarn clean && yarn compile",
+    "build:watch": "yarn compile --watch",
+    "start": "node lib/index.js",
+    "start:log": "node lib/index.js >> ./server.log &",
+    "lint": "eslint --fix src/**/*.js",
+    "typecheck": "flow check"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc.git"
+    "url": "git+https://github.com/rdig/ethereum-honeypot.git"
   },
-  "author": "Raul",
+  "author": "Raul Glogovetan <raul@glogovetan.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc/issues"
+    "url": "https://github.com/rdig/ethereum-honeypot/issues"
   },
-  "homepage": "https://github.com/rdig/32ec8f4ef2f88da9bd441c5f05fe0ccc#readme"
+  "homepage": "https://github.com/rdig/ethereum-honeypot#readme",
+  "dependencies": {
+    "ganache-core": "^2.1.3",
+    "node-fetch": "^2.1.2",
+    "sqlite3": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.5",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^5.0.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-flowtype": "^2.49.3",
+    "eslint-plugin-import": "^2.12.0",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.75.0",
+    "husky": "^1.0.0-rc.9",
+    "lint-staged": "^7.2.0"
+  }
 }

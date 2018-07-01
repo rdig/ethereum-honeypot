@@ -1,0 +1,14 @@
+[include]
+.*/src/.*
+
+[ignore]
+.*/lib/.*
+.*/node_modules/oboe/.*
+
+[libs]
+
+[lints]
+
+[options]
+
+[version]

@@ -1,0 +1,6 @@
+{
+    "requestFailed": "Request failed",
+    "badRequest": "Bad Request",
+    "okRequest": "OK",
+    "noResponseObject": "The provided request object is invalid"
+}

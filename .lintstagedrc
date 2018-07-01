@@ -1,0 +1,11 @@
+{
+  "linters": {
+    "src/**/*.js": [
+      "yarn lint",
+      "git add"
+    ],
+  },
+  "ignore": [
+    "ganache-core"
+  ]
+}
