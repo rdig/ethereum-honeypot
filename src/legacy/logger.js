@@ -15,7 +15,7 @@ const honeyLogger = ({ request, payload, response } = {}) => {
       as: 'Local connection',
       city: 'Local connection',
       country: 'Local connection',
-      isp: 'Local connection',
+      isp: null,
       lat: 0.0,
       lon: 0.0,
     };
@@ -24,7 +24,6 @@ const honeyLogger = ({ request, payload, response } = {}) => {
         as: fetchResponse.as,
         city: fetchResponse.city,
         country: fetchResponse.country,
-        isp: fetchResponse.country,
         lat: fetchResponse.lat,
         lon: fetchResponse.lon,
       };
