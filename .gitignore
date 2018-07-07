@@ -3,3 +3,4 @@ honeypot*.db
 ganache-accounts.json
 lib
 *.log
+serviceAccountKey.json
