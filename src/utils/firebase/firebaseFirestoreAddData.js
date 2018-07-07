@@ -15,6 +15,9 @@ import { DEFAULT_COLLECTION } from './defaults';
  */
 export const firebaseFirestoreAddData = async ({
   honeypotObject,
+  /*
+   * @TODO Different collections if we're in a development environment
+   */
   collection = DEFAULT_COLLECTION,
 }: Object): Promise<*> => {
   try {

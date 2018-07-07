@@ -9,11 +9,32 @@ import fetch from 'node-fetch';
 import { GEOJS_ENDPOINT, LOCAL_GEO_OBJECT, ENUMERABLE_PROP } from './defaults';
 import { LOCAL_IP } from '../../defaults';
 
+const defaultLocationObject = Object.assign(
+  {},
+  LOCAL_GEO_OBJECT,
+  { success: true },
+);
+
+/**
+ * Connect to the geolocation service endpoint and return the location data from a given IP
+ *
+ * @param {string} ipAddress the ip address to retrive location data for
+ *
+ * @return {Object} the location object
+ */
 const geoJsConnector = async (ipAddress: string = LOCAL_IP): Object => {
   /*
    * We're assuming the IP Address is correct (already validated)
    */
   const endpoint = `${GEOJS_ENDPOINT}${ipAddress}.json`;
+  /*
+   * If we're on localhost, just return the default (local) location object
+   *
+   * @TODO Maybe create a whitelist of allowed locahost IPs
+   */
+  if (ipAddress === '127.0.0.1') {
+    return defaultLocationObject;
+  }
   /*
    * This needs to be wrapped inside a try-catch block since the fetch request might fail
    */
@@ -23,9 +44,8 @@ const geoJsConnector = async (ipAddress: string = LOCAL_IP): Object => {
      * Parse the JSON response into an object
      */
     const resultsObject = Object.assign(
-      LOCAL_GEO_OBJECT,
+      defaultLocationObject,
       JSON.parse(await fetchResult.text()),
-      { success: true },
     );
     /*
      * Normalize the prop names and values
@@ -52,9 +72,8 @@ const geoJsConnector = async (ipAddress: string = LOCAL_IP): Object => {
      * @TODO Create a better error logging util
      */
     console.log(`[${new Date().toString()}] Could not fetch data from the remote endpoint: '${endpoint}'. ${caughtError.message}`);
-    return ({
-      success: false,
-    });
+    defaultLocationObject.success = false;
+    return defaultLocationObject;
   }
 };
 
