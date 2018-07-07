@@ -3,7 +3,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const fetch = require('node-fetch');
 
-const honeyLogger = ({ request, payload, response } = {}) => {
+const honeyLogger = async ({ request, payload, response } = {}) => {
   const ipAddressRaw = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || (request.connection.socket ? request.connection.socket.remoteAddress : null);
   const ipAddress = ipAddressRaw.substring(ipAddressRaw.lastIndexOf(':') + 1);
 
