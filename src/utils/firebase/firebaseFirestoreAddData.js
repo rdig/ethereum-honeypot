@@ -23,7 +23,8 @@ export const firebaseFirestoreAddData = async ({
   try {
     return firestoreDatabase.collection(collection).doc().set(honeypotObject);
   } catch (caughtError) {
-    throw new Error(`[${new Date().toString()}] Could not add data to the Cloud Firestore Database. Check the object you were trying to add: ${JSON.stringify(honeypotObject)}`);
+    console.log(`[${new Date().toString()}] Could not add data to the Cloud Firestore Database. Check the object you were trying to add: ${JSON.stringify(honeypotObject)}`);
+    return false;
   }
 };
 
