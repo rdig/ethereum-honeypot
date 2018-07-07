@@ -64,7 +64,7 @@ export const start = async ({
              *
              * @TODO Handle the case in which the provider runs into and error
              */
-            ganacheProvider.send(requestPayload, (responseError, providerResponse) => {
+            ganacheProvider.send(requestPayload, async (responseError, providerResponse) => {
               /*
                * Get the response from the provider so we can send it back to the requester
                */
@@ -93,7 +93,7 @@ export const start = async ({
                * @TODO Cleaner way to log requests/responses
                */
               if (logger && typeof logger === 'function') {
-                logger({
+                await logger({
                   request,
                   payload: requestPayload,
                   response: serverReponse,

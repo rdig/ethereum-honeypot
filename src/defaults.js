@@ -31,12 +31,4 @@ export const REQUEST_METHODS: Object = {
   OPTIONS: 'OPTIONS',
 };
 
-const defaults = {
-  MIME_TYPES,
-  STATUS_CODES,
-  DEFAULT_HEADERS,
-  REQUEST_TYPES,
-  REQUEST_METHODS,
-};
-
-export default defaults;
+export const LOCAL_IP: string = '127.0.0.1';
