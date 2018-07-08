@@ -1,3 +1,3 @@
 /* @flow */
 
-export { default } from './geoJsConnector';
+export { default, ipApiConnector } from './ipApiConnector';

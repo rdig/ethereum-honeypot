@@ -18,11 +18,13 @@ const defaultLocationObject = Object.assign(
 /**
  * Connect to the geolocation service endpoint and return the location data from a given IP
  *
+ * @method ipApiConnector
+ *
  * @param {string} ipAddress the ip address to retrive location data for
  *
  * @return {Object} the location object
  */
-const geoJsConnector = async (ipAddress: string = LOCAL_IP): Object => {
+export const ipApiConnector = async (ipAddress: string = LOCAL_IP): Object => {
   /*
    * We're assuming the IP Address is correct (already validated)
    */
@@ -32,7 +34,7 @@ const geoJsConnector = async (ipAddress: string = LOCAL_IP): Object => {
    *
    * @TODO Maybe create a whitelist of allowed locahost IPs
    */
-  if (ipAddress === '127.0.0.1') {
+  if (ipAddress === LOCAL_IP) {
     return defaultLocationObject;
   }
   /*
@@ -77,4 +79,4 @@ const geoJsConnector = async (ipAddress: string = LOCAL_IP): Object => {
   }
 };
 
-export default geoJsConnector;
+export default ipApiConnector;

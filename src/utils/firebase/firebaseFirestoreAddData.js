@@ -21,10 +21,9 @@ export const firebaseFirestoreAddData = async ({
   collection = DEFAULT_COLLECTION,
 }: Object): Promise<*> => {
   try {
-    return firestoreDatabase.collection(collection).doc().set(honeypotObject);
+    return firestoreDatabase.collection(collection).add(honeypotObject);
   } catch (caughtError) {
-    console.log(`[${new Date().toString()}] Could not add data to the Cloud Firestore Database. Check the object you were trying to add: ${JSON.stringify(honeypotObject)}`);
-    return false;
+    throw new Error(`[${new Date().toString()}] Could not add data to the Cloud Firestore Database. Check the object you were trying to add: ${JSON.stringify(honeypotObject)}. Error: ${caughtError.message}`);
   }
 };
 
