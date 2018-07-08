@@ -14,7 +14,9 @@ import { DEFAULT_COLLECTION } from './defaults';
  * @param {string} fieldPath name of the field to search for
  * @param {string} opStr comparison operator (as a string)
  * @param {any} value any value to test for
- * @param {number} limit optinal limit the number of returned values
+ * @param {number} limit optional limit the number of returned values
+ * @param {string} orderBy optional prop name to order by
+ * @param {string} orderDirection optional direction to order ('asc', 'desc')
  * @param {string} collection optional collection name, defaults to `rpc-requests`
  *
  * The above arguments are passed in as props of and Object
@@ -27,15 +29,20 @@ export const firebaseFirestoreGetData = async ({
   opStr,
   value,
   limit,
+  orderBy,
+  orderDirection = 'asc',
   /*
    * @TODO Different collections if we're in a development environment
    */
   collection = DEFAULT_COLLECTION,
 }: Object): Promise<*> => {
   try {
-    const firestoreQuery = firestoreDatabase.collection(collection).where(fieldPath, opStr, value);
+    let firestoreQuery = firestoreDatabase.collection(collection).where(fieldPath, opStr, value);
     if (limit) {
-      return firestoreQuery.limit(limit).get();
+      firestoreQuery = firestoreQuery.limit(limit);
+    }
+    if (orderBy) {
+      firestoreQuery = firestoreQuery.orderBy(orderBy, orderDirection);
     }
     return firestoreQuery.get();
   } catch (caughtError) {
