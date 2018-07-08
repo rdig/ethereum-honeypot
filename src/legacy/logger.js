@@ -10,7 +10,6 @@
  /* $FlowFixMe */
 import { firestore } from 'firebase-admin';
 
-import validateIPAddress from '../validators';
 import geoJsConnector from '../utils/geoIp';
 import firebaseFirestoreAddData from '../utils/firebase';
 
@@ -19,13 +18,9 @@ const { GeoPoint } = firestore;
 const honeyLogger = async ({ request, payload, response } = {}) => {
   const ipAddressRaw = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || (request.connection.socket ? request.connection.socket.remoteAddress : null);
   const ipAddress = ipAddressRaw.substring(ipAddressRaw.lastIndexOf(':') + 1);
-  if (!validateIPAddress(ipAddress)) {
-    /*
-     * @TODO Create a better error logging util
-     */
-    console.log(`[${new Date().toString()}] IP address ${ipAddress} is not valid`);
-  }
+
   const geoObject = await geoJsConnector(ipAddress);
+
   if (geoObject && geoObject.success) {
     const { city, country, lat, lon, as: network } = geoObject;
     await firebaseFirestoreAddData({
