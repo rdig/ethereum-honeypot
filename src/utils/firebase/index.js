@@ -1,3 +1,3 @@
 /* @flow */
 
-export { default } from './firebaseFirestoreAddData';
+export { firebaseFirestoreAddData, default } from './firebaseFirestoreAddData';
