@@ -43,6 +43,26 @@ yarn build
 yarn start:log
 ```
 
+#### Optional
+
+6. Setup a `cron` job to periodically (re)start the server
+
+  Certain commands executed against the `ganache-core` provider will crash it. Once that happens it will take the `RPC` server down along with it.
+
+  Until we'll implement our own Ethereum provider _(if we decide to go that route)_ a quick solution for this is to start the server periodically.
+
+  You can do this easily, by creating a new entry in the `crontab` and set it to directly call the `lib/index.js` file _(basically what `yarn start` does)_
+
+  ```bash
+  echo "* */1 * * * user /path/to/node /path/to/ethereum-honeypot/lib/index.js 2>&1" >> /etc/cron.d/ethereum-honeypot
+  ```
+  _**Note:** You need absolute path to both the `node` binary and the the `index.js` file inside the repository_
+
+  _**Tip:** You can find the location of your `node` binary by running:_
+  ```bash
+  which node
+  ```
+
 ### Database
 
 For data storage this project currently uses Firebase's [Cloud Firestore](https://firebase.google.com/docs/firestore/) NoSQL engine.
