@@ -76,7 +76,6 @@ const honeyLogger = async ({ request, payload, response } = {}) => {
     * @TODO Better response validation (maybe inside the server?)
     */
     if (Array.isArray(responseObject)) {
-      console.log('is array');
       if (!responseObject.length) {
         failedResponse.push(true);
       }
@@ -91,7 +90,7 @@ const honeyLogger = async ({ request, payload, response } = {}) => {
       throw new Error(`Request could not be handled. Not Logging it.`);
     }
     await firebaseFirestoreAddData({
-      honeypotObject: Object.assign(
+      dataObject: Object.assign(
         {},
         {
           ipAddress,

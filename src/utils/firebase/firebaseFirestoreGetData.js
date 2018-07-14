@@ -2,7 +2,7 @@
 
 import firestoreDatabase from './firebaseFirestoreConnector';
 
-import { DEFAULT_COLLECTION } from './defaults';
+import { RAW_COLLECTION } from './defaults';
 
 /**
  * Get all obects from a specified firestore collection.
@@ -34,7 +34,7 @@ export const firebaseFirestoreGetData = async ({
   /*
    * @TODO Different collections if we're in a development environment
    */
-  collection = DEFAULT_COLLECTION,
+  collection = RAW_COLLECTION,
 }: Object): Promise<*> => {
   try {
     let firestoreQuery = firestoreDatabase.collection(collection).where(fieldPath, opStr, value);

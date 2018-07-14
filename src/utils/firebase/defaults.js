@@ -1,9 +1,4 @@
 /* @flow */
 
-export const DEFAULT_COLLECTION: string = 'rpc-requests';
-
-const firebaseDefaults: Object = {
-  DEFAULT_COLLECTION,
-};
-
-export default firebaseDefaults;
+export const RAW_COLLECTION: string = 'rpc-requests-raw';
+export const STATS_COLLECTION: string = 'rpc-requests-stats';
