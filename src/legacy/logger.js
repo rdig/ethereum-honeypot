@@ -16,6 +16,8 @@ import { firebaseFirestoreAddData, firebaseFirestoreGetData } from '../utils/fir
 
 const { GeoPoint } = firestore;
 
+import type { honeypotDataObjectType } from '../flowtypes';
+
 const honeyLogger = async ({ request, payload, response } = {}) => {
   const ipAddress: string = getIpFromRequest(request);
   let geoObject: Object = { success: false };
@@ -122,7 +124,7 @@ const honeyLogger = async ({ request, payload, response } = {}) => {
           date: new Date(),
         },
       ),
-    });
+    }: { dataObject: honeypotDataObjectType });
   }
 };
 
