@@ -14,9 +14,9 @@ import {
   STATUS_CODES,
   DEFAULT_HEADERS,
   MIME_TYPES,
-} from '../defaults';
+} from './defaults';
 
-import type { ServerArgumentsType } from '../flowtypes';
+import type { ServerArgumentsType } from './flowtypes';
 
 export const start = async ({
   port = RPC_DEFAULT_PORT,

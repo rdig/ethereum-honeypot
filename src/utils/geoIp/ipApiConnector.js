@@ -4,8 +4,12 @@ import fetch from 'node-fetch';
 
 import { errorLogger } from '../errorLogger';
 
-import { GEOJS_ENDPOINT, LOCAL_GEO_OBJECT, ENUMERABLE_PROP } from './defaults';
-import { LOCAL_IP } from '../../defaults';
+import {
+  GEOJS_ENDPOINT,
+  LOCAL_GEO_OBJECT,
+  ENUMERABLE_PROP,
+  LOCAL_IP,
+} from './defaults';
 
 const defaultLocationObject = Object.assign(
   {},

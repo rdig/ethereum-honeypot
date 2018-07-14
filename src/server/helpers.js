@@ -2,7 +2,7 @@
 
 import { errorLogger } from '../utils/errorLogger';
 
-import { STATUS_CODES, DEFAULT_HEADERS, REQUEST_METHODS } from '../defaults';
+import { STATUS_CODES, DEFAULT_HEADERS, REQUEST_METHODS } from './defaults';
 import {
   noResponseObject,
   badRequest,

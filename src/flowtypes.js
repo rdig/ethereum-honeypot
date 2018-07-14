@@ -1,11 +1,5 @@
 /* @flow */
 
-export type ServerArgumentsType = {
-  port?: number,
-  providerOptions?: Object,
-  logger?: (...*) => {},
-};
-
 export type honeypotDataObjectType = {
   city: string,
   country: string,

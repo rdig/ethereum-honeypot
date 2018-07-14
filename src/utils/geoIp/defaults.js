@@ -13,3 +13,5 @@ export const LOCAL_GEO_OBJECT: Object = {
 export const ENUMERABLE_PROP: Object = {
   enumerable: true,
 };
+
+export const LOCAL_IP: string = '127.0.0.1';
