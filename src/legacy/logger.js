@@ -14,6 +14,7 @@ import { getIpFromRequest } from '../utils/getIpFromRequest';
 import { ipApiConnector } from '../utils/geoIp';
 import { firebaseFirestoreAddData, firebaseFirestoreGetData } from '../utils/firebase';
 import { errorLogger } from '../utils/errorLogger';
+import statsLogger from '../stats';
 
 const { GeoPoint } = firestore;
 
@@ -92,40 +93,40 @@ const honeyLogger = async ({ request, payload, response } = {}) => {
     if (failedResponse.some(failedResponses => failedResponses === true)) {
       return errorLogger('Request could not be handled. Not Logging it');
     }
-    await firebaseFirestoreAddData({
-      dataObject: Object.assign(
-        {},
-        {
-          ipAddress,
-          city,
-          country,
-          geoLocation: new GeoPoint(
-            parseFloat(lat),
-            parseFloat(lon)
-          ),
-          network,
-          userAgent: request.headers['user-agent'] || false,
-          /*
-           * Request might be an array, so just take the first index from it
-           *
-           * It also might be an empty array with no method prop in the first index's object
-           */
-          method:
-            (Array.isArray(payload) && payload.length === 1)
-              ? payload[0].method
-              : payload.method,
-          request:
-            (Array.isArray(payload) && payload.length === 1)
-              ? payload[0]
-              : payload,
-          response:
-            (Array.isArray(responseObject) && responseObject.length === 1)
-              ? responseObject[0]
-              : responseObject,
-          date: new Date(),
-        },
-      ),
-    }: { dataObject: honeypotDataObjectType });
+    const dataObject: honeypotDataObjectType = Object.assign(
+      {},
+      {
+        ipAddress,
+        city,
+        country,
+        geoLocation: new GeoPoint(
+          parseFloat(lat),
+          parseFloat(lon)
+        ),
+        network,
+        userAgent: request.headers['user-agent'] || false,
+        /*
+         * Request might be an array, so just take the first index from it
+         *
+         * It also might be an empty array with no method prop in the first index's object
+         */
+        method:
+          (Array.isArray(payload) && payload.length === 1)
+            ? payload[0].method
+            : payload.method,
+        request:
+          (Array.isArray(payload) && payload.length === 1)
+            ? payload[0]
+            : payload,
+        response:
+          (Array.isArray(responseObject) && responseObject.length === 1)
+            ? responseObject[0]
+            : responseObject,
+        date: new Date(),
+      },
+    );
+    await firebaseFirestoreAddData({ dataObject });
+    await statsLogger(dataObject);
   }
 };
 
