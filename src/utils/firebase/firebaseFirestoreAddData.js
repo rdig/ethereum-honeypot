@@ -25,9 +25,9 @@ export const firebaseFirestoreAddData = async ({
   documentId,
 }: Object): Promise<*> => {
   try {
-    let firestoreQuery = firestoreDatabase.collection(collection);
+    const firestoreQuery = firestoreDatabase.collection(collection);
     if (documentId) {
-      firestoreQuery = firestoreQuery.doc(documentId);
+      return firestoreQuery.doc(documentId).set(dataObject);
     }
     return firestoreQuery.add(dataObject);
   } catch (caughtError) {

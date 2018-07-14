@@ -45,7 +45,9 @@ export const firebaseFirestoreGetData = async ({
     if (documentId) {
       firestoreQuery = firestoreQuery.doc(documentId);
     }
-    firestoreQuery = firestoreQuery.where(fieldPath, opStr, value);
+    if (fieldPath && opStr && value) {
+      firestoreQuery = firestoreQuery.where(fieldPath, opStr, value);
+    }
     if (limit) {
       firestoreQuery = firestoreQuery.limit(limit);
     }
