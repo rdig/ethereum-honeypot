@@ -58,6 +58,57 @@ export const getInitialDataObject = ({
 };
 
 /**
+ * Helper method to generate an stats data object for an existing prop
+ * (basically incrementing it's values by one)
+ *
+ * @method getExistingDataObject
+ *
+ * @param {string} propName Stat name inside the document id to search for (basically the individual value inside the stats collection)
+ * @param {Object} additionalData An optional object to add to the individual stat value, besides the count
+ * @param {Object} statsData An option object containing already existing stats data
+ *
+ * The above params are passed in as props of an Object.
+ */
+export const getExistingDataObject = ({
+  propName,
+  additionalData,
+  statsData = {},
+}: {
+  propName: string,
+  additionalData?: Object,
+  statsData?: Object,
+}): Object => {
+  let propNameData: Object | number;
+  /*
+   * This is to check if this was just upgraded from a simple counter to an object
+   */
+  const propNameCount: number = statsData[propName].count
+    ? statsData[propName].count + 1
+    : statsData[propName] + 1;
+  /*
+   * If we have additional data to add, the counter gets it's own prop name.
+   */
+  if (additionalData && additionalData instanceof Object) {
+    propNameData = Object.assign(
+      {},
+      statsData[propName],
+      additionalData,
+      { count: propNameCount },
+    );
+  } else {
+    /*
+     * But if there's no additional data, we just increment it
+     */
+    propNameData = propNameCount;
+  }
+  return Object.assign(
+    {},
+    statsData,
+    { [propName]: propNameData },
+  );
+};
+
+/**
  * Helper method to reduce code repetition when counting stats.
  * This will check if the document Id exists, if it is, it increments it, otherwise it adds it in.
  *
@@ -91,62 +142,28 @@ export const statsGenerator = async ({
     collection,
     documentId,
   });
-  /*
-   * Document id does not exist, this is the first entry of it's kind, so we add it.
-   */
-  if (!availableStatsFireabaseQuery.exists) {
-    return firebaseFirestoreAddData({
-      dataObject: getInitialDataObject({ propName, additionalData }),
-      collection,
-      documentId,
-    });
-  }
-  /*
-   * Document id exists, let's see if the current prop name exists
-   */
   const allStats = availableStatsFireabaseQuery.data();
-  if (Object.prototype.hasOwnProperty.call(allStats, propName)) {
+  if (!allStats || !Object.prototype.hasOwnProperty.call(allStats, propName)) {
     /*
-     * Document id exists, and the current prop name exists, so we increment it
+     * Either the document id does not exist, or the prop name does not exist within the document
+     *
+     * In either case we, add it new (if the document id does not exist, it will be created)
      */
-    let propNameData: Object | number;
-    /*
-     * This is to check if this was just upgraded from a simple counter to an object
-     */
-    const propNameCount: number = allStats[propName].count
-      ? allStats[propName].count + 1
-      : allStats[propName] + 1;
-    /*
-     * If we have additional data to add, the counter gets it's own prop name.
-     */
-    if (additionalData && additionalData instanceof Object) {
-      propNameData = Object.assign(
-        {},
-        allStats[propName],
-        additionalData,
-        { count: propNameCount },
-      );
-    } else {
-      /*
-       * But if there's no additional data, we just increment it
-       */
-      propNameData = propNameCount;
-    }
     return firebaseFirestoreAddData({
-      dataObject: Object.assign(
-        {},
-        allStats,
-        { [propName]: propNameData },
-      ),
+      dataObject: getInitialDataObject({
+        propName,
+        additionalData,
+        statsData: allStats,
+      }),
       collection,
       documentId,
     });
   }
   /*
-   * Document id exists, but the current prop name does not exist. We add it now
+   * Document id exists, and the current prop name exists, so we increment it
    */
   return firebaseFirestoreAddData({
-    dataObject: getInitialDataObject({
+    dataObject: getExistingDataObject({
       propName,
       additionalData,
       statsData: allStats,
