@@ -17,34 +17,44 @@ const propNameCountInitial: number = 1;
  * @method getInitialDataObject
  *
  * @param {string} propName Stat name inside the document id to search for (basically the individual value inside the stats collection)
- * @param {Objecct} additionalData An optional object to add to the individual stat value, besides the count
+ * @param {Object} additionalData An optional object to add to the individual stat value, besides the count
+ * @param {Object} statsData An option object containing already existing stats data
  *
  * The above params are passed in as props of an Object.
  */
 export const getInitialDataObject = ({
   propName,
   additionalData,
+  statsData = {},
 }: {
   propName: string,
   additionalData?: Object,
+  statsData?: Object,
 }): Object => {
   /*
-   * If we don't have additional data, just count the entries,
-   * and since this is the first one, it's 1
+   * The current prop name does not exist. We add it now
    */
-  const dataObject: Object = {};
-  dataObject[propName] = propNameCountInitial;
+  let propNameData: Object | number;
   /*
-   * But if we have additional data to add, the counter gets it's own prop name.
-   */
+  * If we have additional data to add, then the counter gets it's own prop name.
+  */
   if (additionalData && additionalData instanceof Object) {
-    dataObject[propName] = Object.assign(
+    propNameData = Object.assign(
       {},
-      { count: propNameCountInitial },
       additionalData,
+      { count: propNameCountInitial },
     );
+  } else {
+    /*
+     * But if there's no additional data, just set the counter directly on the prop name
+     */
+    propNameData = propNameCountInitial;
   }
-  return dataObject;
+  return Object.assign(
+    {},
+    statsData,
+    { [propName]: propNameData },
+  );
 };
 
 /**
@@ -135,28 +145,12 @@ export const statsGenerator = async ({
   /*
    * Document id exists, but the current prop name does not exist. We add it now
    */
-  let propNameData: Object | number;
-  /*
-  * If we have additional data to add, the counter gets it's own prop name.
-  */
-  if (additionalData && additionalData instanceof Object) {
-    propNameData = Object.assign(
-      {},
-      additionalData,
-      { count: propNameCountInitial },
-    );
-  } else {
-    /*
-     * But if there's no additional data, we just increment it
-     */
-    propNameData = propNameCountInitial;
-  }
   return firebaseFirestoreAddData({
-    dataObject: Object.assign(
-      {},
-      allStats,
-      { [propName]: propNameData },
-    ),
+    dataObject: getInitialDataObject({
+      propName,
+      additionalData,
+      statsData: allStats,
+    }),
     collection,
     documentId,
   });
