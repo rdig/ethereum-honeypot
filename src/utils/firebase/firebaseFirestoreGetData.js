@@ -18,6 +18,7 @@ import { RAW_COLLECTION } from './defaults';
  * @param {string} orderBy optional prop name to order by
  * @param {string} orderDirection optional direction to order ('asc', 'desc')
  * @param {string} collection optional collection name, defaults to `rpc-requests`
+ * @param {object} dataObject the object to write to the firestore database
  *
  * The above arguments are passed in as props of and Object
  *
@@ -35,9 +36,14 @@ export const firebaseFirestoreGetData = async ({
    * @TODO Different collections if we're in a development environment
    */
   collection = RAW_COLLECTION,
+  documentId,
 }: Object): Promise<*> => {
   try {
-    let firestoreQuery = firestoreDatabase.collection(collection).where(fieldPath, opStr, value);
+    let firestoreQuery = firestoreDatabase.collection(collection);
+    if (documentId) {
+      firestoreQuery = firestoreQuery.doc(documentId);
+    }
+    firestoreQuery = firestoreQuery.where(fieldPath, opStr, value);
     if (limit) {
       firestoreQuery = firestoreQuery.limit(limit);
     }
