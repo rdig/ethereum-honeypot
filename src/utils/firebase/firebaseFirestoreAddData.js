@@ -1,5 +1,7 @@
 /* @flow */
 
+import { errorLogger } from '../errorLogger';
+
 import firestoreDatabase from './firebaseFirestoreConnector';
 
 import { RAW_COLLECTION } from './defaults';
@@ -29,7 +31,11 @@ export const firebaseFirestoreAddData = async ({
     }
     return firestoreQuery.add(dataObject);
   } catch (caughtError) {
-    throw new Error(`[${new Date().toString()}] Could not add data to the Cloud Firestore Database. Check the object you were trying to add: ${JSON.stringify(dataObject)}. Error: ${caughtError.message}`);
+    return errorLogger(
+      'Could not add data to the Cloud Firestore Database',
+      dataObject,
+      caughtError.message,
+    );
   }
 };
 

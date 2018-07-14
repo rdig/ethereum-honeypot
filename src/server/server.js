@@ -3,8 +3,10 @@
 import { createServer } from 'http';
 import { provider } from 'ganache-core';
 
+import { errorLogger } from '../utils/errorLogger';
+
 import { handleRequest } from './helpers';
-import { requestFailed } from '../messages.json';
+import { requestFailed } from './messages.json';
 import {
   REQUEST_TYPES,
   RPC_DEFAULT_PORT,
@@ -30,14 +32,12 @@ export const start = async ({
     let requestDataBuffer: Buffer = Buffer.alloc(0);
     /*
      * Request
-     *
-     * @TODO Better handle the error request type
-     *
-     * Maybe this should also be in a try-catch block
      */
-    request.on(REQUEST_TYPES.ERROR, (error) => {
-      throw new Error(`${requestFailed}. ${error}`);
-    });
+    request.on(REQUEST_TYPES.ERROR, (error: string) => errorLogger(
+      requestFailed,
+      null,
+      error,
+    ));
     /*
      * Get the streamed request data and add it to the Buffer
      */
@@ -64,7 +64,7 @@ export const start = async ({
              *
              * @TODO Handle the case in which the provider runs into and error
              */
-            ganacheProvider.send(requestPayload, async (responseError, providerResponse) => {
+            ganacheProvider.send(requestPayload, async (responseerrorError, providerResponse) => {
               /*
                * Get the response from the provider so we can send it back to the requester
                */
@@ -122,11 +122,8 @@ export const start = async ({
        * was malformed, and aswer with status `400 Bad Request`
        */
       } catch (caughtError) {
-        /*
-         * @TODO Create a better error logging util
-         */
-        console.log(`[${new Date().toString()}]`, caughtError);
         handleMiscRequest();
+        errorLogger('Bad request', null, caughtError);
       }
     });
   });

@@ -1,5 +1,7 @@
 /* @flow */
 
+import { errorLogger } from '../errorLogger';
+
 import firestoreDatabase from './firebaseFirestoreConnector';
 
 import { RAW_COLLECTION } from './defaults';
@@ -52,10 +54,11 @@ export const firebaseFirestoreGetData = async ({
     }
     return firestoreQuery.get();
   } catch (caughtError) {
-    /*
-     * @TODO Create a better error logging util
-     */
-    throw new Error(`[${new Date().toString()}] Could not get data from the Cloud Firestore Database. Check the query you were trying to use: ${fieldPath} ${opStr} ${value}. Error: ${caughtError.message}`);
+    return errorLogger(
+      'Could not get data from the Cloud Firestore Database',
+      { fieldPath, opStr, value },
+      caughtError.message,
+    );
   }
 };
 

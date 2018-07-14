@@ -1,5 +1,7 @@
 /* @flow */
 
+import { errorLogger } from '../errorLogger';
+
 import { IPV6_LOCAL, PLACEHOLDER_IP, X_FORWARDED_HEADER } from './defaults';
 
 /**
@@ -20,7 +22,10 @@ export const getIpFromRequest = (requestObject: Object): string => {
     /*
      * @TODO Create a better error logging util
      */
-    throw new Error(`[${new Date().toString()}] Could not get IP address information from the Request Object: ${JSON.stringify(requestObject)}`);
+    errorLogger(
+      'Could not get IP address information from the Request Object',
+      requestObject,
+    );
   }
   const rawIpString: string = (
     requestObject.headers[X_FORWARDED_HEADER]

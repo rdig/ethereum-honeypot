@@ -13,6 +13,7 @@ import { firestore } from 'firebase-admin';
 import { getIpFromRequest } from '../utils/getIpFromRequest';
 import { ipApiConnector } from '../utils/geoIp';
 import { firebaseFirestoreAddData, firebaseFirestoreGetData } from '../utils/firebase';
+import { errorLogger } from '../utils/errorLogger';
 
 const { GeoPoint } = firestore;
 
@@ -89,7 +90,7 @@ const honeyLogger = async ({ request, payload, response } = {}) => {
       failedResponse.push(true);
     }
     if (failedResponse.some(failedResponses => failedResponses === true)) {
-      throw new Error(`Request could not be handled. Not Logging it.`);
+      return errorLogger('Request could not be handled. Not Logging it');
     }
     await firebaseFirestoreAddData({
       dataObject: Object.assign(

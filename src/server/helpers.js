@@ -1,11 +1,13 @@
 /* @flow */
 
+import { errorLogger } from '../utils/errorLogger';
+
 import { STATUS_CODES, DEFAULT_HEADERS, REQUEST_METHODS } from '../defaults';
 import {
   noResponseObject,
   badRequest,
   okRequest,
-} from '../messages.json';
+} from './messages.json';
 
 /**
  * Check if the provided request object contains the required (correct) methods.
@@ -15,9 +17,9 @@ import {
  *
  * @param {Object} responseObject the resolve object to check
  */
-export const checkResponseObjectIsValid = (responseObject: Object): void => {
+export const checkResponseObjectIsValid = (responseObject: Object) => {
   if (!responseObject || !responseObject.connection.on || !responseObject.connection.writable) {
-    throw new Error(noResponseObject);
+    errorLogger(noResponseObject);
   }
 };
 
