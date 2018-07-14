@@ -2,7 +2,7 @@
 
 import { errorLogger } from '../errorLogger';
 
-import firestoreDatabase from './firebaseFirestoreConnector';
+import { getFirestoreReference } from './helpers';
 
 import { RAW_COLLECTION } from './defaults';
 
@@ -25,7 +25,7 @@ export const firebaseFirestoreAddData = async ({
   documentId,
 }: Object): Promise<*> => {
   try {
-    const firestoreQuery = firestoreDatabase.collection(collection);
+    const firestoreQuery = getFirestoreReference({ collection });
     if (documentId) {
       return firestoreQuery.doc(documentId).set(dataObject);
     }

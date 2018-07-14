@@ -3,6 +3,7 @@
 import { errorLogger } from '../errorLogger';
 
 import firestoreDatabase from './firebaseFirestoreConnector';
+import { getFirestoreReference } from './helpers';
 
 import { STATS_COLLECTION, UNDEFINED } from './defaults';
 
@@ -61,7 +62,7 @@ export const firebaseFirestoreBatch = async (batchArray: Array<Object>): Promise
       if (!documentId) {
         return errorLogger('Batch `documentId` was not set', batchArray[index] || UNDEFINED);
       }
-      const batchReference = firestoreDatabase.collection(collection).doc(documentId);
+      const batchReference = getFirestoreReference({ collection, documentId });
       return firestoreBatch[batchMethod](batchReference, dataObject);
     });
     return firestoreBatch.commit();
