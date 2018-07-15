@@ -345,3 +345,31 @@ export const statsTransactionGenerator = async ({
     );
   }
 };
+
+/**
+ * Pad a given date with zeros (where apropriate).
+ *
+ * Date values under 10 are single digits, and in certain cases we need to write them with a
+ * leading zero.
+ *
+ * @method getPaddedDate
+ *
+ * @param {number | string} date The date number (or string) to pad
+ *
+ * @return {string} The padded string
+ */
+export const getPaddedDate = (date: number | string) => {
+  if (!date) {
+    /*
+     * @TODO Move message string to `messages.json`
+     */
+    return errorLogger(
+      'The date value is undefined or 0',
+      date || UNDEFINED,
+    );
+  }
+  if (parseInt(date, 10) <= 9) {
+    return `0${date}`;
+  }
+  return date;
+};
