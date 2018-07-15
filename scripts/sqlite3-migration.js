@@ -16,7 +16,7 @@ const FIREBASE_DEFAULTS = require('../lib/utils/firebase/defaults');
 const { DB_PATH } = process.env;
 const TABLE_NAME = process.env.TABLE_NAME || 'honeypot_new';
 const COLLECTION = process.env.COLLECTION || FIREBASE_DEFAULTS.RAW_COLLECTION;
-const FIRSTORE_BATCH_LIMIT = 2;
+const FIRSTORE_BATCH_LIMIT = 499;
 const SLEEP_SECS = 5;
 
 if (!DB_PATH) {
@@ -38,7 +38,7 @@ console.log(`
  * Fetch the data from the Sqlite3 database
  */
 const sqlite3DbInstance = new sqlite3.Database(path.resolve('.', DB_PATH));
-const SELECT_QUERY = `SELECT * FROM ${TABLE_NAME} LIMIT 5`;
+const SELECT_QUERY = `SELECT * FROM ${TABLE_NAME}`;
 
 sqlite3DbInstance.serialize(() => {
   console.log('Starting import...');
