@@ -95,6 +95,46 @@ To be able to set up the project, you'll need a _(free)_ account and to create a
 7. At this point, you'll be able to start the server without any problems.
 
 ![Firebase Service Accounts](assets/firebase_service_accounts.png)
+a
+### Migrations
+
+#### `Sqlite3` to `Firestore` migration
+
+The initial version of this app used the `sqlite3` file engine to store requests data.
+
+If you ran the app during that period and want to move that data to the current `Firestore` engine, there's the migration script: `yarn migrate:sqlite3`.
+
+It takes in two environment variables trough which you can set the source `database` file location, and the destination `collection` name:
+- `COLLECTION`, used to set the destination `firestore` collection name, defaults to `rpc-requests-raw`.
+- `DB_PATH`, used to set the source `sqlite3` file location. If it's not set, the script will not start.
+
+_Example:_
+```bash
+DB_PATH='../database/old_database.sql' COLLECTION='rpc-requests-test' yarn migrate:sqlite3
+```
+
+**WARNING: Don't run this more than one time on a single collection as your data will be doubled and it will VERY hard to clean that up afterwards.**
+
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `20000` writes on the free plan._
+
+#### Retroactively generate stats data
+
+This is used to generate stats data for any data that was tracked prior to the stats collection implementation.
+
+Stats only count new stats when a new request is made, but not for already available data. To make sense of your old data, there is this migration: `yarn process:retroactive-stats`
+
+It takes in two environment variables trough which you can set the source `collection` name _(from where to count stats)_, and the destination stats `collection` name _(this is optional, since this defaults to `rpc-requests-stats`)_:
+- `COLLECTION`, used to set the source `firestore` collection name, defaults to `rpc-requests-raw`.
+- `STATS_COLLECTION`, optional, used to set the destination `firestore` collection name, defaults to `rpc-requests-stats`.
+
+_Example:_
+```bash
+COLLECTION='rpc-requests-raw' yarn process:retroactive-stats
+```
+
+**WARNING: Only run this on an empty stats collection, since this will overwrite it. Usually you run this migration just after updating the code to the new version (the one that includes stats). You stop the process, run the migration, re-start the process.**
+
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily reads quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `50000` reads on the free plan, so if your database is large, you might run into limits._
 
 ### License
 

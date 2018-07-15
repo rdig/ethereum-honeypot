@@ -1,7 +1,7 @@
 {
   "name": "ethereum-honeypot",
   "description": "Track external parties actions run on open ethereum nodes",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": true,
   "engines": {
     "node": ">=9.11.0",
@@ -16,7 +16,8 @@
     "start:log": "node lib/index.js >> ./server.log &",
     "lint": "eslint --fix src/**/*.js",
     "typecheck": "flow check",
-    "migrate:sqlite3": "yarn build && node scripts/sqlite3-migration.js"
+    "migrate:sqlite3": "yarn build && node scripts/sqlite3-migration.js",
+    "process:retroactive-stats": "yarn build && node scripts/retroactive-stats.js"
   },
   "repository": {
     "type": "git",

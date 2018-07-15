@@ -47,6 +47,7 @@ sqlite3DbInstance.serialize(() => {
    */
   sqlite3DbInstance.all(SELECT_QUERY, (error, allRows) => {
     console.log('Selected the queried rows from the database...');
+    console.log();
     while (allRows.length) {
       /*
        * Create the array chunk
@@ -102,6 +103,7 @@ sqlite3DbInstance.serialize(() => {
        */
       sleep(SLEEP_SECS);
       console.log('Finished processing current batch...');
+      console.log();
     }
   });
 });
