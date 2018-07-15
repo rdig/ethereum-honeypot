@@ -6,7 +6,6 @@ import { DOCUMENTS, UNDEFINED } from './defaults';
 
 /**
  * Track the number of times a unique contry has made a request to the honeypot
- * It makes use of the `statsGenerator()` helper method.
  *
  * @method countriesStats
  *

@@ -9,8 +9,7 @@ import { DOCUMENTS, UNDEFINED } from './defaults';
 const { GeoPoint } = firestore;
 
 /**
- * Track the number of times a unique contry has made a request to the honeypot
- * It makes use of the `statsGenerator()` helper method.
+ * Track the number of times a unique city has made a request to the honeypot
  *
  * @method citiesStats
  *

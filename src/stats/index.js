@@ -5,6 +5,7 @@ import { firestoreDatabase } from '../utils/firebase';
 import { statsTransactionGenerator } from './helpers';
 import { countriesStats } from './countries';
 import { citiesStats } from './cities';
+import { ipAddressesStats } from './ipAddresses';
 
 import type { honeypotDataObjectType } from '../flowtypes';
 
@@ -14,16 +15,25 @@ import type { honeypotDataObjectType } from '../flowtypes';
  * @method stats
  *
  * @param {string} country Country name
+ * @param {string} city City name
+ * @param {GeoPoint} geoLocation Instance of the GeoPoint class, containing location coordinates
+ * @param {string} ipAddress Ip address of the request
  *
- * The above parameter is sent in as a prop name of an {honeypotDataObjectType} Object
+ * The above parameters are sent in as a prop name of an {honeypotDataObjectType} Object
  */
-export const stats = async ({ country, city, geoLocation }: honeypotDataObjectType) => (
+export const stats = async ({
+  country,
+  city,
+  geoLocation,
+  ipAddress,
+}: honeypotDataObjectType) => (
   firestoreDatabase.runTransaction(
     transactionObject => statsTransactionGenerator({
       transactionObject,
       transactionStatsArray: [
         countriesStats(country),
         citiesStats(city, geoLocation),
+        ipAddressesStats(ipAddress),
       ],
     }),
   )
