@@ -1,7 +1,7 @@
 {
   "name": "ethereum-honeypot",
   "description": "Track external parties actions run on open ethereum nodes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "engines": {
     "node": ">=9.11.0",
