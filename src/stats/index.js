@@ -4,6 +4,7 @@ import { firestoreDatabase } from '../utils/firebase';
 
 import { statsTransactionGenerator } from './helpers';
 import { countriesStats } from './countries';
+import { citiesStats } from './cities';
 
 import type { honeypotDataObjectType } from '../flowtypes';
 
@@ -16,12 +17,13 @@ import type { honeypotDataObjectType } from '../flowtypes';
  *
  * The above parameter is sent in as a prop name of an {honeypotDataObjectType} Object
  */
-export const stats = async ({ country }: honeypotDataObjectType) => (
+export const stats = async ({ country, city, geoLocation }: honeypotDataObjectType) => (
   firestoreDatabase.runTransaction(
     transactionObject => statsTransactionGenerator({
       transactionObject,
       transactionStatsArray: [
         countriesStats(country),
+        citiesStats(city, geoLocation),
       ],
     }),
   )
