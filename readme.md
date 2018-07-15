@@ -31,7 +31,7 @@ Currently, it doesn't have a interface to display stats, so you'll have to look 
 
 ![Firebase Firestore Capture](assets/firestore_capture_stats_redacted.png)
 
-### Getting started
+## Getting started
 
 To get started, you'll need:
 
@@ -54,7 +54,7 @@ yarn build
 yarn start:log
 ```
 
-#### Optional
+### Optional
 
 6. Setup a `cron` job to periodically (re)start the server
 
@@ -74,7 +74,7 @@ yarn start:log
   which node
   ```
 
-### Database
+## Database
 
 For data storage this project currently uses Firebase's [Cloud Firestore](https://firebase.google.com/docs/firestore/) NoSQL engine.
 
@@ -95,10 +95,10 @@ To be able to set up the project, you'll need a _(free)_ account and to create a
 7. At this point, you'll be able to start the server without any problems.
 
 ![Firebase Service Accounts](assets/firebase_service_accounts.png)
-a
-### Migrations
 
-#### `Sqlite3` to `Firestore` migration
+## Migrations
+
+### `Sqlite3` to `Firestore` migration
 
 The initial version of this app used the `sqlite3` file engine to store requests data.
 
@@ -117,7 +117,7 @@ DB_PATH='../database/old_database.sql' COLLECTION='rpc-requests-test' yarn migra
 
 _NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `20000` writes on the free plan._
 
-#### Retroactively generate stats data
+### Retroactively generate stats data
 
 This is used to generate stats data for any data that was tracked prior to the stats collection implementation.
 
@@ -136,7 +136,7 @@ COLLECTION='rpc-requests-raw' yarn process:retroactive-stats
 
 _NOTE: Depending on the size of your database, this could take quite a toll on your [daily reads quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `50000` reads on the free plan, so if your database is large, you might run into limits._
 
-### License
+## License
 
 This project is licensed under [MIT](./LICENSE).
 
