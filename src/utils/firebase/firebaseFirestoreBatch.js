@@ -36,12 +36,15 @@ import { STATS_COLLECTION, UNDEFINED } from './defaults';
  *
  * @method firebaseFirestoreBatch
  *
- * @param {Array} batchArray Array containing objects that contain the batch instructions and data.
+ * @param {Array} batchArray Array composed of objects that contain the batch instructions and data.
  */
 export const firebaseFirestoreBatch = async (batchArray: Array<Object>): Promise<*> => {
-  if (!batchArray && !Array.isArray(batchArray)) {
+  if (!batchArray || !Array.isArray(batchArray)) {
+    /*
+     * @TODO Move message string to `messages.json`
+     */
     return errorLogger(
-      'The paramenter you provided is not an Array',
+      'The batch paramenter you provided is not an Array',
       batchArray || UNDEFINED,
     );
   }
@@ -60,13 +63,22 @@ export const firebaseFirestoreBatch = async (batchArray: Array<Object>): Promise
     },
     index: number) => {
       if (!documentId) {
-        return errorLogger('Batch `documentId` was not set', batchArray[index] || UNDEFINED);
+        /*
+         * @TODO Move message string to `messages.json`
+         */
+        return errorLogger(
+          'Batch `documentId` was not set',
+          batchArray[index] || UNDEFINED,
+        );
       }
       const batchReference = getFirestoreReference({ collection, documentId });
       return firestoreBatch[batchMethod](batchReference, dataObject);
     });
     return firestoreBatch.commit();
   } catch (caughtError) {
+    /*
+     * @TODO Move message string to `messages.json`
+     */
     return errorLogger(
       'Could not run the Firestore batch',
       batchArray,
