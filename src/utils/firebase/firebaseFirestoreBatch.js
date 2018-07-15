@@ -60,18 +60,13 @@ export const firebaseFirestoreBatch = async (batchArray: Array<Object>): Promise
       documentId: string,
       batchMethod: string,
       dataObject: Object,
-    },
-    index: number) => {
-      if (!documentId) {
-        /*
-         * @TODO Move message string to `messages.json`
-         */
-        return errorLogger(
-          'Batch `documentId` was not set',
-          batchArray[index] || UNDEFINED,
-        );
+    }) => {
+      let batchReference: Object = getFirestoreReference({ collection });
+      if (documentId) {
+        batchReference = batchReference.doc(documentId);
+      } else {
+        batchReference = batchReference.doc();
       }
-      const batchReference = getFirestoreReference({ collection, documentId });
       return firestoreBatch[batchMethod](batchReference, dataObject);
     });
     return firestoreBatch.commit();
