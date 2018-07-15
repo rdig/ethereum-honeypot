@@ -96,6 +96,27 @@ To be able to set up the project, you'll need a _(free)_ account and to create a
 
 ![Firebase Service Accounts](assets/firebase_service_accounts.png)
 
+### Migrations
+
+#### `Sqlite3` to `Firestore` migration
+
+The initial version of this app used the `sqlite3` file engine to store requests data.
+
+If you ran the app during that period and want to move that data to the current `Firestore` engine, there's the migration script: `yarn migrate:sqlite3`.
+
+It takes in two environment variables trough which you can set the source `database` file location, and the destination `collection` name:
+- `COLLECTION`, used to set the destination `firestore` collection name, defaults to `rpc-requests-raw`.
+- `DB_PATH`, used to set the source `sqlite3` file location. If it's not set, the script will not start.
+
+_Example:_
+```bash
+DB_PATH='../database/old_database.sql' COLLECTION='rpc-requests-test' yarn migrate:sqlite3
+```
+
+**WARNING: Don't run this more than one time on a single collection as your data will be doubled and it will VERY hard to clean that up afterwards.**
+
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `50000` writes on the free plan._
+
 ### License
 
 This project is licensed under [MIT](./LICENSE).
