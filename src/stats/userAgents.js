@@ -2,9 +2,7 @@
 
 import sanitize from 'sanitize-filename';
 
-import { errorLogger } from '../utils/errorLogger';
-
-import { DOCUMENTS, UNDEFINED, UNDERSCORE } from './defaults';
+import { DOCUMENTS, UNDERSCORE } from './defaults';
 
 /**
  * Track the number of times a request used an unique user agent
@@ -15,19 +13,14 @@ import { DOCUMENTS, UNDEFINED, UNDERSCORE } from './defaults';
  */
 export const userAgentsStats = (userAgent: string): Object => {
   try {
-    if (!userAgent || typeof userAgent !== 'string') {
-      /*
-       * @TODO Move message string to `messages.json`
-       */
-      errorLogger(
-        "Stats user agent name not available, we're not counting it",
-        userAgent || UNDEFINED,
-      );
+    let safeUserAgent = 'hidden';
+    if (userAgent && typeof userAgent === 'string') {
+      safeUserAgent = userAgent;
     }
     return {
       documentId: DOCUMENTS.USER_AGENTS,
-      propName: sanitize(userAgent, { replacement: UNDERSCORE }),
-      additionalData: { name: userAgent },
+      propName: sanitize(safeUserAgent, { replacement: UNDERSCORE }),
+      additionalData: { name: safeUserAgent },
     };
   } catch (caughtError) {
     return {};
