@@ -24,7 +24,7 @@ export const errorLogger = (
     if (errorValue instanceof Object) {
       loggerMessage += ` Your object: ${JSON.stringify(errorValue)}.`;
     } else {
-      loggerMessage += ` Yout value: ${errorValue}.`;
+      loggerMessage += ` Your value: ${errorValue}.`;
     }
   }
   if (errorMessage) {
