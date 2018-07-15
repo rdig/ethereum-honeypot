@@ -5,20 +5,31 @@ Track external parties actions run on open ethereum nodes.
 It uses the `ganache-core` provider to simulate a blockchain, let users make requests against it and log the requests and reposenses, along with various meta-data collected from the originating party.
 
 Currently we track:
-- IP Address
-- City
-- Country
-- Latitude
-- Longitude
-- Network (AS)
-- User Agent
-- PRC Method _(useful for stats)_
-- Request Object
-- Response Object
+
+- Raw requests:
+  - IP Address
+  - City
+  - Country
+  - Latitude
+  - Longitude
+  - Network (AS)
+  - User Agent
+  - RPC Method
+  - Request Object
+  - Response Object
+- Stats:
+  - Unique Countries count
+  - Unique Cities count
+  - Unique IP Addresses count
+  - Unique RPC Methods count
+  - Unique User Agents counts
+  - Requests per day
+  - Requests per month
+  - Requests per year
 
 Currently, it doesn't have a interface to display stats, so you'll have to look at the data directly via the database: _(identifying data redacted)_
 
-![Firebase Firestore Capture](assets/firestore_capture_redacted.png)
+![Firebase Firestore Capture](assets/firestore_capture_stats_redacted.png)
 
 ### Getting started
 
@@ -88,3 +99,27 @@ To be able to set up the project, you'll need a _(free)_ account and to create a
 ### License
 
 This project is licensed under [MIT](./LICENSE).
+
+```
+MIT License
+
+Copyright (c) 2018 Raul Glogovetan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
