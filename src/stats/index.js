@@ -8,6 +8,7 @@ import { citiesStats } from './cities';
 import { ipAddressesStats } from './ipAddresses';
 import { methodsStats } from './methods';
 import { userAgentsStats } from './userAgents';
+import { datesStats } from './dates';
 
 import type { honeypotDataObjectType } from '../flowtypes';
 
@@ -22,6 +23,7 @@ import type { honeypotDataObjectType } from '../flowtypes';
  * @param {string} ipAddress Ip address of the request
  * @param {string} method Ip address of the request
  * @param {string} userAgent User agent of that made the request
+ * @param {Date} date Date when the request was made
  *
  * The above parameters are sent in as a prop name of an {honeypotDataObjectType} Object
  */
@@ -32,6 +34,7 @@ export const stats = async ({
   ipAddress,
   method,
   userAgent,
+  date,
 }: honeypotDataObjectType) => (
   firestoreDatabase.runTransaction(
     transactionObject => statsTransactionGenerator({
@@ -42,6 +45,7 @@ export const stats = async ({
         ipAddressesStats(ipAddress),
         methodsStats(method),
         userAgentsStats(userAgent),
+        ...datesStats(date),
       ],
     }),
   )

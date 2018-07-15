@@ -5,7 +5,7 @@ import { errorLogger } from '../utils/errorLogger';
 import { DOCUMENTS, UNDEFINED } from './defaults';
 
 /**
- * Track the number of times a unique contry has made a request to the honeypot
+ * Track the number of times a unique country has made a request to the honeypot
  *
  * @method countriesStats
  *

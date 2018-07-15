@@ -358,12 +358,12 @@ export const statsTransactionGenerator = async ({
  *
  * @return {string} The padded string
  */
-export const getPaddedDate = (date: number | string) => {
+export const getPaddedDate = (date: number | string): string => {
   if (!date) {
     /*
      * @TODO Move message string to `messages.json`
      */
-    return errorLogger(
+    errorLogger(
       'The date value is undefined or 0',
       date || UNDEFINED,
     );
@@ -371,5 +371,5 @@ export const getPaddedDate = (date: number | string) => {
   if (parseInt(date, 10) <= 9) {
     return `0${date}`;
   }
-  return date;
+  return `${date}`;
 };

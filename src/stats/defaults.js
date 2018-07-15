@@ -6,6 +6,9 @@ export const DOCUMENTS: Object = {
   IPS: 'ip-addresses',
   METHODS: 'methods',
   USER_AGENTS: 'user-agents',
+  YEARS: 'years',
+  MONTHS: 'months',
+  DAYS: 'days',
 };
 
 export const UNDEFINED: string = 'undefined';
