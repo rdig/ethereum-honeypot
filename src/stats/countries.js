@@ -2,8 +2,6 @@
 
 import { errorLogger } from '../utils/errorLogger';
 
-import { statsGenerator } from './helpers';
-
 import { DOCUMENTS, UNDEFINED } from './defaults';
 
 /**
@@ -14,17 +12,20 @@ import { DOCUMENTS, UNDEFINED } from './defaults';
  *
  * @param {string} country The country name to track the stats of
  */
-export const countriesStats = async (country: string) => {
+export const countriesStats = (country: string): Object => {
   if (!country || typeof country !== 'string') {
-    return errorLogger(
+    /*
+     * @TODO Move message string to `messages.json`
+     */
+    errorLogger(
       "Stats country name not available, we're counting it",
       country || UNDEFINED,
     );
   }
-  return statsGenerator({
+  return {
     documentId: DOCUMENTS.COUNTRIES,
     propName: country,
-  });
+  };
 };
 
 export default countriesStats;

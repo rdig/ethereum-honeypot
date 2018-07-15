@@ -1,11 +1,14 @@
 /* @flow */
 
+import { firestoreDatabase } from '../utils/firebase';
+
+import { statsTransactionGenerator } from './helpers';
 import { countriesStats } from './countries';
 
 import type { honeypotDataObjectType } from '../flowtypes';
 
 /**
- * Split the honeypot logger data object to the various stats tracking methods
+ * Orchestrate the transaction batch read and writes
  *
  * @method stats
  *
@@ -13,8 +16,15 @@ import type { honeypotDataObjectType } from '../flowtypes';
  *
  * The above parameter is sent in as a prop name of an {honeypotDataObjectType} Object
  */
-export const stats = async ({ country }: honeypotDataObjectType) => {
-  await countriesStats(country);
-};
+export const stats = async ({ country }: honeypotDataObjectType) => (
+  firestoreDatabase.runTransaction(
+    transactionObject => statsTransactionGenerator({
+      transactionObject,
+      transactionStatsArray: [
+        countriesStats(country),
+      ],
+    }),
+  )
+);
 
 export default stats;
