@@ -12,19 +12,23 @@ import { DOCUMENTS, UNDEFINED } from './defaults';
  * @param {string} country The country name to track the stats of
  */
 export const countriesStats = (country: string): Object => {
-  if (!country || typeof country !== 'string') {
-    /*
-     * @TODO Move message string to `messages.json`
-     */
-    errorLogger(
-      "Stats country name not available, we're counting it",
-      country || UNDEFINED,
-    );
+  try {
+    if (!country || typeof country !== 'string') {
+      /*
+       * @TODO Move message string to `messages.json`
+       */
+      errorLogger(
+        "Stats country name not available, we're counting it",
+        country || UNDEFINED,
+      );
+    }
+    return {
+      documentId: DOCUMENTS.COUNTRIES,
+      propName: country,
+    };
+  } catch (caughtError) {
+    return {};
   }
-  return {
-    documentId: DOCUMENTS.COUNTRIES,
-    propName: country,
-  };
 };
 
 export default countriesStats;

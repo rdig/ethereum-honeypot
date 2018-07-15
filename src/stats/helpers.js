@@ -237,39 +237,60 @@ export const statsTransactionGenerator = async ({
     /*
      * Since this is a transaction, we first need to read the data, and only then we can write it.
      */
-    const transactionAvailableStatsData: Array<Object> = await transactionStatsArray.map(async ({
-      collection = STATS_COLLECTION,
-      documentId,
-      propName,
-      additionalData,
-    }: {
-      collection?: string,
-      documentId: string,
-      propName: string,
-      additionalData?: Object,
-    }) => {
-      if (!documentId) {
-        /*
-         * @TODO Move message string to `messages.json`
-         */
-        errorLogger('Stats `documentId` was not set', documentId || UNDEFINED);
-      }
-      if (!propName) {
-        /*
-         * @TODO Move message string to `messages.json`
-         */
-        errorLogger('Stats prop name was not set', propName || UNDEFINED);
-      }
-      const statsDocumentReference = getFirestoreReference({ collection, documentId });
-      const transactionQuery: Object = await transactionObject.get(statsDocumentReference);
-      const transactionStatsData = transactionQuery.data();
-      return {
-        reference: statsDocumentReference,
-        data: transactionStatsData,
+    const transactionAvailableStatsData: Array<Object> = await transactionStatsArray
+      /*
+       * If one of the array's value is an empty Object (or does not contain the `documentId`
+       * and `propName` props), we filter it out.
+       *
+       * This way we don't track stats that we cannot (we dont't have the value), but we also don't
+       * prevent other stats from being tracked.
+       */
+      .filter(({
+        documentId,
+        propName,
+      }: {
+        documentId: string,
+        propName: string,
+      }) => {
+        try {
+          if (!documentId) {
+            /*
+             * @TODO Move message string to `messages.json`
+             */
+            errorLogger('Stats `documentId` was not set', documentId || UNDEFINED);
+          }
+          if (!propName) {
+            /*
+             * @TODO Move message string to `messages.json`
+             */
+            errorLogger('Stats prop name was not set', propName || UNDEFINED);
+          }
+          return true;
+        } catch (caughtError) {
+          return false;
+        }
+      })
+      .map(async ({
+        collection = STATS_COLLECTION,
+        documentId,
         propName,
         additionalData,
-      };
-    });
+      }: {
+        collection?: string,
+        documentId: string,
+        propName: string,
+        additionalData?: Object,
+      }) => {
+        const statsDocumentReference = getFirestoreReference({ collection, documentId });
+        const transactionQuery: Object = await transactionObject.get(statsDocumentReference);
+        const transactionStatsData = transactionQuery.data();
+        return {
+          reference: statsDocumentReference,
+          data: transactionStatsData,
+          propName,
+          additionalData,
+        };
+      });
     /*
      * We've got the data, now we process it and write back
      */
@@ -286,7 +307,6 @@ export const statsTransactionGenerator = async ({
         propName,
         additionalData,
       } = await availableData;
-      // console.log(reference, data, propName, additionalData);
       if (!data || !Object.prototype.hasOwnProperty.call(data, propName)) {
         /*
          * Either the document id does not exist, or the prop name does not exist within the document

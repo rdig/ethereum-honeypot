@@ -12,19 +12,23 @@ import { DOCUMENTS, UNDEFINED } from './defaults';
  * @param {string} ipAddress The ip address to track the stats of
  */
 export const ipAddressesStats = (ipAddress: string): Object => {
-  if (!ipAddress || typeof ipAddress !== 'string') {
-    /*
-     * @TODO Move message string to `messages.json`
-     */
-    errorLogger(
-      "Stats ip address not available, we're counting it",
-      ipAddress || UNDEFINED,
-    );
+  try {
+    if (!ipAddress || typeof ipAddress !== 'string') {
+      /*
+       * @TODO Move message string to `messages.json`
+       */
+      errorLogger(
+        "Stats ip address not available, we're counting it",
+        ipAddress || UNDEFINED,
+      );
+    }
+    return {
+      documentId: DOCUMENTS.IPS,
+      propName: ipAddress,
+    };
+  } catch (caughtError) {
+    return {};
   }
-  return {
-    documentId: DOCUMENTS.IPS,
-    propName: ipAddress,
-  };
 };
 
 export default ipAddressesStats;

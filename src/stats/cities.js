@@ -22,20 +22,24 @@ export const citiesStats = (
     parseFloat('0.0'),
   ),
 ): Object => {
-  if (!city || typeof city !== 'string') {
-    /*
-     * @TODO Move message string to `messages.json`
-     */
-    errorLogger(
-      "Stats city name not available, we're counting it",
-      city || UNDEFINED,
-    );
+  try {
+    if (!city || typeof city !== 'string') {
+      /*
+       * @TODO Move message string to `messages.json`
+       */
+      errorLogger(
+        "Stats city name not available, we're counting it",
+        city || UNDEFINED,
+      );
+    }
+    return {
+      documentId: DOCUMENTS.CITIES,
+      propName: city,
+      additionalData: { geoLocation },
+    };
+  } catch (caughtError) {
+    return {};
   }
-  return {
-    documentId: DOCUMENTS.CITIES,
-    propName: city,
-    additionalData: { geoLocation },
-  };
 };
 
 export default citiesStats;
