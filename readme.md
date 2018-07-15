@@ -95,7 +95,7 @@ To be able to set up the project, you'll need a _(free)_ account and to create a
 7. At this point, you'll be able to start the server without any problems.
 
 ![Firebase Service Accounts](assets/firebase_service_accounts.png)
-
+a
 ### Migrations
 
 #### `Sqlite3` to `Firestore` migration
@@ -116,6 +116,25 @@ DB_PATH='../database/old_database.sql' COLLECTION='rpc-requests-test' yarn migra
 **WARNING: Don't run this more than one time on a single collection as your data will be doubled and it will VERY hard to clean that up afterwards.**
 
 _NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `20000` writes on the free plan._
+
+#### Retroactively generate stats data
+
+This is used to generate stats data for any data that was tracked prior to the stats collection implementation.
+
+Stats only count new stats when a new request is made, but not for already available data. To make sense of your old data, there is this migration: `yarn process:retroactive-stats`
+
+It takes in two environment variables trough which you can set the source `collection` name _(from where to count stats)_, and the destination stats `collection` name _(this is optional, since this defaults to `rpc-requests-stats`)_:
+- `COLLECTION`, used to set the source `firestore` collection name, defaults to `rpc-requests-raw`.
+- `STATS_COLLECTION`, optional, used to set the destination `firestore` collection name, defaults to `rpc-requests-stats`.
+
+_Example:_
+```bash
+COLLECTION='rpc-requests-raw' yarn process:retroactive-stats
+```
+
+**WARNING: Only run this on an empty stats collection, since this will overwrite it. Usually you run this migration just after updating the code to the new version (the one that includes stats). You stop the process, run the migration, re-start the process.**
+
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily reads quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `50000` reads on the free plan, so if your database is large, you might run into limits._
 
 ### License
 
