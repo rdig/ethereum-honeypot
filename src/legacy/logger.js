@@ -104,7 +104,7 @@ const honeyLogger = async ({ request, payload, response } = {}) => {
           parseFloat(lon)
         ),
         network,
-        userAgent: request.headers['user-agent'] || false,
+        userAgent: request.headers['user-agent'] || 'hidden',
         /*
          * Request might be an array, so just take the first index from it
          *

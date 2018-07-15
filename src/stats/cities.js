@@ -28,7 +28,7 @@ export const citiesStats = (
        * @TODO Move message string to `messages.json`
        */
       errorLogger(
-        "Stats city name not available, we're counting it",
+        "Stats city name not available, we're not counting it",
         city || UNDEFINED,
       );
     }

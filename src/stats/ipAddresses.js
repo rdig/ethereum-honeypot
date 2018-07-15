@@ -18,7 +18,7 @@ export const ipAddressesStats = (ipAddress: string): Object => {
        * @TODO Move message string to `messages.json`
        */
       errorLogger(
-        "Stats ip address not available, we're counting it",
+        "Stats ip address not available, we're not counting it",
         ipAddress || UNDEFINED,
       );
     }

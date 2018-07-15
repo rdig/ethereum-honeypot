@@ -7,18 +7,18 @@ import { DOCUMENTS, UNDEFINED } from './defaults';
 /**
  * Track the number of times a request used an unique web3 method
  *
- * @method methodStats
+ * @method methodsStats
  *
  * @param {string} method The method name to track the stats of
  */
-export const methodStats = (method: string): Object => {
+export const methodsStats = (method: string): Object => {
   try {
     if (!method || typeof method !== 'string') {
       /*
        * @TODO Move message string to `messages.json`
        */
       errorLogger(
-        "Stats web3 method name not available, we're counting it",
+        "Stats web3 method name not available, we're not counting it",
         method || UNDEFINED,
       );
     }
@@ -31,4 +31,4 @@ export const methodStats = (method: string): Object => {
   }
 };
 
-export default methodStats;
+export default methodsStats;

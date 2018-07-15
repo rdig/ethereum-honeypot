@@ -18,7 +18,7 @@ export const countriesStats = (country: string): Object => {
        * @TODO Move message string to `messages.json`
        */
       errorLogger(
-        "Stats country name not available, we're counting it",
+        "Stats country name not available, we're not counting it",
         country || UNDEFINED,
       );
     }
