@@ -115,7 +115,7 @@ DB_PATH='../database/old_database.sql' COLLECTION='rpc-requests-test' yarn migra
 
 **WARNING: Don't run this more than one time on a single collection as your data will be doubled and it will VERY hard to clean that up afterwards.**
 
-_NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `50000` writes on the free plan._
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `20000` writes on the free plan._
 
 ### License
 
