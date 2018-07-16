@@ -12,7 +12,7 @@ import { RAW_COLLECTION, UNDEFINED } from './defaults';
  *
  * @method getFirestoreReference
  *
- * @param {string} collection The name of the collection, defaults to `rpc-requests-raw`
+ * @param {string} collection The name of the collection, defaults to `rpc-requests`
  * @param {string} documentId And optional document id name
  *
  * @return {Object} An instance reference to the collection (and optionally to the document id)
