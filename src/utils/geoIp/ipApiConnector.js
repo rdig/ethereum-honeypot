@@ -1,13 +1,15 @@
 /* @flow */
 
-/*
- * Flow has problems with this import, even after I've added in a generic flow type
- */
-/* $FlowFixMe */
 import fetch from 'node-fetch';
 
-import { GEOJS_ENDPOINT, LOCAL_GEO_OBJECT, ENUMERABLE_PROP } from './defaults';
-import { LOCAL_IP } from '../../defaults';
+import { errorLogger } from '../errorLogger';
+
+import {
+  GEOJS_ENDPOINT,
+  LOCAL_GEO_OBJECT,
+  ENUMERABLE_PROP,
+  LOCAL_IP,
+} from './defaults';
 
 const defaultLocationObject = Object.assign(
   {},
@@ -70,10 +72,13 @@ export const ipApiConnector = async (ipAddress: string = LOCAL_IP): Object => {
     );
     return resultsObject;
   } catch (caughtError) {
-    /*
-     * @TODO Create a better error logging util
-     */
-    console.log(`[${new Date().toString()}] Could not fetch data from the remote endpoint: '${endpoint}'. ${caughtError.message}`);
+    errorLogger(
+      `Could not fetch data from the remote endpoint: '${endpoint}'`,
+      null,
+      caughtError.message,
+    );
+  } finally {
+    /* eslint-disable no-unsafe-finally */
     defaultLocationObject.success = false;
     return defaultLocationObject;
   }

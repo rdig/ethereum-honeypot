@@ -5,22 +5,33 @@ Track external parties actions run on open ethereum nodes.
 It uses the `ganache-core` provider to simulate a blockchain, let users make requests against it and log the requests and reposenses, along with various meta-data collected from the originating party.
 
 Currently we track:
-- IP Address
-- City
-- Country
-- Latitude
-- Longitude
-- Network (AS)
-- User Agent
-- PRC Method _(useful for stats)_
-- Request Object
-- Response Object
+
+- Raw requests:
+  - IP Address
+  - City
+  - Country
+  - Latitude
+  - Longitude
+  - Network (AS)
+  - User Agent
+  - RPC Method
+  - Request Object
+  - Response Object
+- Stats:
+  - Unique Countries count
+  - Unique Cities count
+  - Unique IP Addresses count
+  - Unique RPC Methods count
+  - Unique User Agents counts
+  - Requests per day
+  - Requests per month
+  - Requests per year
 
 Currently, it doesn't have a interface to display stats, so you'll have to look at the data directly via the database: _(identifying data redacted)_
 
-![Firebase Firestore Capture](assets/firestore_capture_redacted.png)
+![Firebase Firestore Capture](assets/firestore_capture_stats_redacted.png)
 
-### Getting started
+## Getting started
 
 To get started, you'll need:
 
@@ -43,7 +54,7 @@ yarn build
 yarn start:log
 ```
 
-#### Optional
+### Optional
 
 6. Setup a `cron` job to periodically (re)start the server
 
@@ -63,7 +74,7 @@ yarn start:log
   which node
   ```
 
-### Database
+## Database
 
 For data storage this project currently uses Firebase's [Cloud Firestore](https://firebase.google.com/docs/firestore/) NoSQL engine.
 
@@ -85,6 +96,70 @@ To be able to set up the project, you'll need a _(free)_ account and to create a
 
 ![Firebase Service Accounts](assets/firebase_service_accounts.png)
 
-### License
+## Migrations
+
+### `Sqlite3` to `Firestore` migration
+
+The initial version of this app used the `sqlite3` file engine to store requests data.
+
+If you ran the app during that period and want to move that data to the current `Firestore` engine, there's the migration script: `yarn migrate:sqlite3`.
+
+It takes in two environment variables trough which you can set the source `database` file location, and the destination `collection` name:
+- `COLLECTION`, used to set the destination `firestore` collection name, defaults to `rpc-requests-raw`.
+- `DB_PATH`, used to set the source `sqlite3` file location. If it's not set, the script will not start.
+
+_Example:_
+```bash
+DB_PATH='../database/old_database.sql' COLLECTION='rpc-requests-test' yarn migrate:sqlite3
+```
+
+**WARNING: Don't run this more than one time on a single collection as your data will be doubled and it will VERY hard to clean that up afterwards.**
+
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `20000` writes on the free plan._
+
+### Retroactively generate stats data
+
+This is used to generate stats data for any data that was tracked prior to the stats collection implementation.
+
+Stats only count new stats when a new request is made, but not for already available data. To make sense of your old data, there is this migration: `yarn process:retroactive-stats`
+
+It takes in two environment variables trough which you can set the source `collection` name _(from where to count stats)_, and the destination stats `collection` name _(this is optional, since this defaults to `rpc-requests-stats`)_:
+- `COLLECTION`, used to set the source `firestore` collection name, defaults to `rpc-requests-raw`.
+- `STATS_COLLECTION`, optional, used to set the destination `firestore` collection name, defaults to `rpc-requests-stats`.
+
+_Example:_
+```bash
+COLLECTION='rpc-requests-raw' yarn process:retroactive-stats
+```
+
+**WARNING: Only run this on an empty stats collection, since this will overwrite it. Usually you run this migration just after updating the code to the new version (the one that includes stats). You stop the process, run the migration, re-start the process.**
+
+_NOTE: Depending on the size of your database, this could take quite a toll on your [daily reads quota](https://firebase.google.com/docs/firestore/pricing?authuser=0). Remember, you only have `50000` reads on the free plan, so if your database is large, you might run into limits._
+
+## License
 
 This project is licensed under [MIT](./LICENSE).
+
+```
+MIT License
+
+Copyright (c) 2018 Raul Glogovetan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

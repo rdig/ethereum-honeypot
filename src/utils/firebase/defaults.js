@@ -1,9 +1,10 @@
 /* @flow */
 
-export const DEFAULT_COLLECTION: string = 'rpc-requests';
+import path from 'path';
 
-const firebaseDefaults: Object = {
-  DEFAULT_COLLECTION,
-};
+export const SERVICE_ACCOUNT_KEY_PATH: string = path.resolve('.', 'serviceAccountKey.json');
 
-export default firebaseDefaults;
+export const RAW_COLLECTION: string = 'rpc-requests';
+export const STATS_COLLECTION: string = 'rpc-requests-stats';
+
+export const UNDEFINED: string = 'undefined';

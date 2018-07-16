@@ -1,8 +1,10 @@
 /* @flow */
 
-import firestoreDatabase from './firebaseFirestoreConnector';
+import { errorLogger } from '../errorLogger';
 
-import { DEFAULT_COLLECTION } from './defaults';
+import { getFirestoreReference } from './helpers';
+
+import { RAW_COLLECTION } from './defaults';
 
 /**
  * Get all obects from a specified firestore collection.
@@ -18,6 +20,7 @@ import { DEFAULT_COLLECTION } from './defaults';
  * @param {string} orderBy optional prop name to order by
  * @param {string} orderDirection optional direction to order ('asc', 'desc')
  * @param {string} collection optional collection name, defaults to `rpc-requests`
+ * @param {object} dataObject the object to write to the firestore database
  *
  * The above arguments are passed in as props of and Object
  *
@@ -34,10 +37,17 @@ export const firebaseFirestoreGetData = async ({
   /*
    * @TODO Different collections if we're in a development environment
    */
-  collection = DEFAULT_COLLECTION,
+  collection = RAW_COLLECTION,
+  documentId,
 }: Object): Promise<*> => {
   try {
-    let firestoreQuery = firestoreDatabase.collection(collection).where(fieldPath, opStr, value);
+    let firestoreQuery = getFirestoreReference({ collection });
+    if (documentId) {
+      firestoreQuery = firestoreQuery.doc(documentId);
+    }
+    if (fieldPath && opStr && value) {
+      firestoreQuery = firestoreQuery.where(fieldPath, opStr, value);
+    }
     if (limit) {
       firestoreQuery = firestoreQuery.limit(limit);
     }
@@ -46,10 +56,11 @@ export const firebaseFirestoreGetData = async ({
     }
     return firestoreQuery.get();
   } catch (caughtError) {
-    /*
-     * @TODO Create a better error logging util
-     */
-    throw new Error(`[${new Date().toString()}] Could not get data from the Cloud Firestore Database. Check the query you were trying to use: ${fieldPath} ${opStr} ${value}. Error: ${caughtError.message}`);
+    return errorLogger(
+      'Could not get data from the Cloud Firestore Database',
+      { fieldPath, opStr, value },
+      caughtError.message,
+    );
   }
 };
 

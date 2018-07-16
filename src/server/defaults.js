@@ -30,5 +30,3 @@ export const REQUEST_METHODS: Object = {
   GET: 'GET',
   OPTIONS: 'OPTIONS',
 };
-
-export const LOCAL_IP: string = '127.0.0.1';
